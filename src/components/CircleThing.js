@@ -8,7 +8,7 @@ function CircleThing({ className }) {
   );
 }*/
 
-import { Circle } from 'react-shapes';
+/*import { Circle } from 'react-shapes';
 
    const CircleThing = () => {
        return (
@@ -16,4 +16,4 @@ import { Circle } from 'react-shapes';
        );
    };
 
-export default CircleThing;
+export default CircleThing;*/

@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import CircleThing from './components/CircleThing.js'
+//import CircleThing from './components/CircleThing.js'
 
 function App() {
   return (
