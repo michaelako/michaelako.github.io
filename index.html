@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michaela Kotarba — Yoga</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:     #F7F3EE;
+      --sand:      #EDE5D8;
+      --sage:      #6B8F71;
+      --sage-dark: #4A6850;
+      --terra:     #B8694A;
+      --charcoal:  #2C2A27;
+      --mid:       #7A7570;
+      --white:     #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--cream);
+      color: var(--charcoal);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(247, 243, 238, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sand);
+    }
+
+    nav .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mid);
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--sage-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 80%, rgba(107, 143, 113, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(184, 105, 74, 0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sage-dark);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--mid);
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      border-radius: 100px;
+      border: 1px solid;
+    }
+
+    .badge-sage  { border-color: var(--sage);  color: var(--sage-dark); background: rgba(107,143,113,0.08); }
+    .badge-terra { border-color: var(--terra);  color: var(--terra);     background: rgba(184,105,74,0.08); }
+    .badge-sand  { border-color: var(--mid);    color: var(--mid);       background: transparent; }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--mid);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--mid), transparent);
+      animation: scrollDrop 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollDrop {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 2rem; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+    }
+
+    h2 em { font-style: italic; color: var(--sage-dark); }
+
+    p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--mid);
+      line-height: 1.8;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p + p { margin-top: 1rem; }
+
+    .stat-row {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--sand);
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .about-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mandala {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mandala::before {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(107,143,113,0.4);
+    }
+
+    .mandala::after {
+      content: '';
+      position: absolute;
+      inset: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(107,143,113,0.25);
+    }
+
+    .mandala-inner {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--sage);
+      opacity: 0.25;
+    }
+
+    .mandala-text {
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--sage-dark);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CLASSES ── */
+    #classes { background: var(--cream); }
+
+    .class-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: start;
+      border: 1px solid var(--sand);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .class-card:hover {
+      box-shadow: 0 8px 32px rgba(107,143,113,0.12);
+      transform: translateY(-2px);
+    }
+
+    .class-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(107, 143, 113, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .class-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 0.4rem;
+    }
+
+    .class-meta {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 0.75rem;
+    }
+
+    .class-body p { font-size: 0.9rem; }
+
+    .free-tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      background: rgba(107, 143, 113, 0.12);
+      color: var(--sage-dark);
+      border: 1px solid rgba(107,143,113,0.3);
+    }
+
+    /* ── PLAYLIST ── */
+    #playlist { background: var(--charcoal); }
+
+    #playlist .section-label { color: var(--terra); }
+    #playlist h2 { color: var(--cream); }
+    #playlist h2 em { color: #A8C9AE; }
+    #playlist p  { color: rgba(247,243,238,0.6); }
+
+    .playlist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+
+    .playlist-copy p + p { margin-top: 1rem; }
+
+    .spotify-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+
+    /* ── OPEN TO WORK ── */
+    #contact { background: var(--sage-dark); }
+
+    #contact .section-label { color: rgba(247,243,238,0.6); }
+
+    #contact h2 {
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+
+    #contact h2 em { color: #C8DFCa; }
+
+    #contact > .container > p {
+      color: rgba(247, 243, 238, 0.75);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-options {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-light {
+      background: var(--cream);
+      color: var(--sage-dark);
+    }
+
+    .btn-light:hover {
+      background: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid rgba(247,243,238,0.4);
+    }
+
+    .btn-outline:hover {
+      background: rgba(247,243,238,0.08);
+      border-color: var(--cream);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(247,243,238,0.08);
+    }
+
+    footer .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: rgba(247,243,238,0.5);
+      text-decoration: none;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: rgba(247,243,238,0.35);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.5rem; }
+
+      .about-grid,
+      .playlist-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+      .about-visual { order: -1; }
+      .mandala { width: 200px; height: 200px; }
+
+      .class-card { grid-template-columns: 1fr; gap: 1rem; }
+
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">Michaela Kotarba</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#classes">Classes</a></li>
+      <li><a href="#playlist">Playlist</a></li>
+      <li><a href="#contact">Work with me</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Yoga Teacher &amp; Practitioner</p>
+    <h1>Move with<br /><em>intention.</em></h1>
+    <p class="hero-sub">
+      Vinyasa-rooted flow, community-first classes,
+      and a decade of practice — right here in North Carolina.
+    </p>
+    <div class="hero-badges">
+      <span class="badge badge-sage">RYT 200 Certified</span>
+      <span class="badge badge-terra">Vinyasa</span>
+      <span class="badge badge-sand">10 Years Practice</span>
+      <span class="badge badge-sand">NC Native</span>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-label">About me</span>
+          <h2>Rooted in movement,<br /><em>built on breath.</em></h2>
+          <p>
+            I'm Michaela — a 26-year-old North Carolina native who found her
+            calling on the mat. What started as a personal practice ten years ago
+            grew into something bigger: a real belief that movement is for everyone,
+            and that great yoga doesn't have to cost a thing.
+          </p>
+          <p>
+            I earned my RYT 200 certification and specialize in vinyasa flow —
+            breath-linked movement that builds heat, strength, and presence. My
+            teaching style is approachable, grounded, and always intentional.
+          </p>
+          <div class="stat-row">
+            <div class="stat-item">
+              <span class="stat-num">10</span>
+              <span class="stat-label">Years practice</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">RYT</span>
+              <span class="stat-label">200 Certified</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">1</span>
+              <span class="stat-label">Style: vinyasa</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="mandala">
+            <div class="mandala-inner"></div>
+            <span class="mandala-text">breath · flow · presence</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLASSES -->
+  <section id="classes">
+    <div class="container">
+      <span class="section-label">What I teach</span>
+      <h2>Come flow with<br /><em>me.</em></h2>
+      <p>
+        My classes are free, welcoming, and designed for real people —
+        no experience required, just a willingness to show up.
+      </p>
+
+      <div class="class-card">
+        <div class="class-icon">🌊</div>
+        <div class="class-body">
+          <h3>Friday Flows</h3>
+          <p class="class-meta">Every Friday &nbsp;·&nbsp; Free &nbsp;·&nbsp; All levels</p>
+          <p>
+            My weekly vinyasa class — breath-linked movement set to music,
+            designed to close out the week with energy and ease.
+            No mat? No problem. No experience? Even better.
+            Just show up and move.
+          </p>
+          <span class="free-tag">Always free</span>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-icon">✨</div>
+        <div class="class-body">
+          <h3>Private &amp; Custom Sessions</h3>
+          <p class="class-meta">By request &nbsp;·&nbsp; Flexible format</p>
+          <p>
+            Interested in a private session, a class for your team, or a
+            pop-up event? I'm open to it. Whether it's one person or a group,
+            I'll tailor the practice to what you actually need.
+          </p>
+          <span class="free-tag">Let's talk</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYLIST -->
+  <section id="playlist">
+    <div class="container">
+      <div class="playlist-grid">
+        <div class="playlist-copy">
+          <span class="section-label">Sound &amp; flow</span>
+          <h2>The music<br /><em>matters.</em></h2>
+          <p>
+            A great flow deserves a great soundtrack. I curate every playlist
+            with intention — building energy through the practice and landing
+            somewhere calm on the other side.
+          </p>
+          <p>
+            Hit play before you hit the mat.
+          </p>
+          <br />
+          <a
+            class="btn btn-outline"
+            href="https://open.spotify.com/playlist/2lfLw4ho5fyW0bekAb8qIy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open in Spotify
+          </a>
+        </div>
+        <div class="spotify-wrap">
+          <iframe
+            style="border-radius: 12px;"
+            src="https://open.spotify.com/embed/playlist/2lfLw4ho5fyW0bekAb8qIy?utm_source=generator&theme=0"
+            width="100%"
+            height="380"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Michaela's Yoga Playlist"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / OPEN TO WORK -->
+  <section id="contact">
+    <div class="container">
+      <span class="section-label">Open to opportunities</span>
+      <h2>Let's build<br /><em>something.</em></h2>
+      <p>
+        I'm actively looking for teaching opportunities — studios, corporate
+        wellness programs, retreats, or community events. If you want thoughtful,
+        energetic vinyasa instruction, let's connect.
+      </p>
+      <div class="contact-options">
+        <a
+          class="btn btn-light"
+          href="mailto:hello@michaelakotarba.com"
+        >
+          Get in touch
+        </a>
+        <a
+          class="btn btn-outline"
+          href="https://open.spotify.com/playlist/2lfLw4ho5fyW0bekAb8qIy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Hear the vibe first
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="logo">Michaela Kotarba</a>
+    <p>RYT 200 &nbsp;·&nbsp; Vinyasa &nbsp;·&nbsp; North Carolina</p>
+  </footer>
+
+</body>
+</html>
