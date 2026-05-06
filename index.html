@@ -3,153 +3,390 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Michaela Kotarba — Yoga</title>
+  <title>Michaela Kotarba</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet" />
   <style>
+
+    /* ─────────────────────────────────────────────
+       RESET & TOKENS
+    ───────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --cream:     #F7F3EE;
-      --sand:      #EDE5D8;
-      --sage:      #6B8F71;
-      --sage-dark: #4A6850;
-      --terra:     #B8694A;
-      --charcoal:  #2C2A27;
-      --mid:       #7A7570;
-      --white:     #FFFFFF;
-    }
-
     html { scroll-behavior: smooth; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--cream);
-      color: var(--charcoal);
-      font-size: 16px;
-      line-height: 1.6;
+    /* 5-TO-9 (yoga / light) palette */
+    :root {
+      --navy:    #1B294B;
+      --gold:    #4A3C1B;
+      --steel:   #54638A;
+      --sand:    #9F916E;
+      --fog:     #ADB5C9;
+      --cream:   #F6F3EE;
+      --white:   #FFFFFF;
+      --ink:     #1a1a1a;
+
+      /* mode-aware tokens (yoga = default) */
+      --bg:          var(--cream);
+      --bg-alt:      var(--white);
+      --surface:     #EDE7DC;
+      --text-main:   var(--ink);
+      --text-mid:    var(--gold);
+      --text-soft:   #7a7060;
+      --accent:      var(--sand);
+      --accent-hi:   var(--gold);
+      --nav-bg:      rgba(246,243,238,0.93);
+      --nav-border:  rgba(159,145,110,0.2);
+      --section-alt: var(--white);
+      --label-color: var(--sand);
+      --h2-em:       var(--gold);
+      --badge-bg:    rgba(159,145,110,0.12);
+      --badge-border: var(--sand);
+      --badge-color: var(--gold);
+      --toggle-bg:   var(--navy);
+      --toggle-text: var(--fog);
+      --btn-primary-bg:    var(--navy);
+      --btn-primary-text:  var(--white);
+      --btn-outline-border: var(--navy);
+      --btn-outline-text:   var(--navy);
+      --footer-bg:   var(--navy);
+      --footer-text: var(--fog);
+      --orb-color:   rgba(84,99,138,0.35);
+      --orb-ring:    rgba(27,41,75,0.15);
+      --card-bg:     var(--white);
+      --card-border: rgba(159,145,110,0.2);
+      --link-color:  var(--steel);
     }
 
-    /* ── NAV ── */
+    /* 9-TO-5 (corporate / dark) overrides */
+    body.corp {
+      --bg:          var(--navy);
+      --bg-alt:      #131d33;
+      --surface:     #223060;
+      --text-main:   var(--fog);
+      --text-mid:    var(--fog);
+      --text-soft:   rgba(173,181,201,0.6);
+      --accent:      var(--sand);
+      --accent-hi:   var(--fog);
+      --nav-bg:      rgba(27,41,75,0.95);
+      --nav-border:  rgba(173,181,201,0.12);
+      --section-alt: #131d33;
+      --label-color: var(--sand);
+      --h2-em:       var(--fog);
+      --badge-bg:    rgba(173,181,201,0.08);
+      --badge-border: var(--steel);
+      --badge-color: var(--fog);
+      --toggle-bg:   var(--cream);
+      --toggle-text: var(--navy);
+      --btn-primary-bg:    var(--sand);
+      --btn-primary-text:  var(--navy);
+      --btn-outline-border: rgba(173,181,201,0.4);
+      --btn-outline-text:   var(--fog);
+      --footer-bg:   #0d1626;
+      --footer-text: rgba(173,181,201,0.5);
+      --orb-color:   rgba(84,99,138,0.4);
+      --orb-ring:    rgba(173,181,201,0.1);
+      --card-bg:     #223060;
+      --card-border: rgba(173,181,201,0.1);
+      --link-color:  var(--fog);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-size: 16px;
+      line-height: 1.6;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* ─────────────────────────────────────────────
+       MODE VISIBILITY
+    ───────────────────────────────────────────── */
+    .corp-only  { display: none !important; }
+    body.corp .yoga-only { display: none !important; }
+    body.corp .corp-only { display: revert !important; }
+    /* restore flex for heroes, scoped to their respective modes */
+    body:not(.corp) #yoga-hero { display: flex !important; }
+    body.corp #corp-hero { display: flex !important; }
+
+    /* ─────────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
+      z-index: 200;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 3rem;
-      background: rgba(247, 243, 238, 0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--sand);
+      padding: 1.1rem 3rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--nav-border);
+      transition: background 0.5s ease, border-color 0.5s ease;
     }
 
     nav .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
       font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--charcoal);
+      letter-spacing: 0.04em;
+      color: var(--text-main);
       text-decoration: none;
+      transition: color 0.5s;
     }
 
     nav ul {
       list-style: none;
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
+      align-items: center;
     }
 
     nav ul a {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--mid);
+      color: var(--text-soft);
       transition: color 0.2s;
     }
 
-    nav ul a:hover { color: var(--sage-dark); }
+    nav ul a:hover { color: var(--text-main); }
 
-    /* ── HERO ── */
-    .hero {
+    /* ── MODE TOGGLE ── */
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--toggle-bg);
+      color: var(--toggle-text);
+      border: none;
+      border-radius: 100px;
+      padding: 0.45rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      white-space: nowrap;
+    }
+
+    .mode-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    .toggle-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* ─────────────────────────────────────────────
+       SHARED LAYOUT
+    ───────────────────────────────────────────── */
+    section { padding: 7rem 2rem; transition: background 0.5s; }
+    .container { max-width: 940px; margin: 0 auto; }
+    .container-wide { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--label-color);
+      margin-bottom: 1rem;
+      display: block;
+      transition: color 0.5s;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      transition: color 0.5s;
+    }
+
+    h2 em {
+      font-style: italic;
+      color: var(--h2-em);
+    }
+
+    p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--text-soft);
+      line-height: 1.85;
+      transition: color 0.5s;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.85rem;
+      border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--btn-outline-text);
+      border: 1px solid var(--btn-outline-border);
+    }
+
+    .btn-outline:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .photo-placeholder {
+      background: var(--surface);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.5s;
+    }
+
+    .photo-placeholder::after {
+      content: 'photo';
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      opacity: 0.4;
+    }
+
+    /* divider line accent */
+    .rule {
+      width: 48px;
+      height: 1px;
+      background: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+
+    /* ═══════════════════════════════════════════
+       ████  5-TO-9 (YOGA) SECTIONS
+    ═══════════════════════════════════════════ */
+
+    /* ── YOGA HERO ── */
+    #yoga-hero {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 6rem 2rem 4rem;
+      padding: 6rem 2rem 5rem;
       position: relative;
       overflow: hidden;
+      background: var(--bg);
     }
 
-    .hero::before {
+    #yoga-hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 60% at 20% 80%, rgba(107, 143, 113, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(184, 105, 74, 0.08) 0%, transparent 55%);
+        radial-gradient(ellipse 65% 55% at 15% 85%, rgba(84,99,138,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 45% at 85% 15%, rgba(159,145,110,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(173,181,201,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .hero-eyebrow {
-      font-size: 0.7rem;
+    .yoga-eyebrow {
+      font-size: 0.68rem;
       font-weight: 500;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--sage);
-      margin-bottom: 1.25rem;
-    }
-
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 9vw, 7.5rem);
-      font-weight: 300;
-      line-height: 1.05;
-      color: var(--charcoal);
+      color: var(--sand);
       margin-bottom: 1.5rem;
     }
 
-    .hero h1 em {
+    #yoga-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 10vw, 8.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--text-main);
+      margin-bottom: 1.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    #yoga-hero h1 em {
       font-style: italic;
-      color: var(--sage-dark);
+      color: var(--gold);
     }
 
     .hero-sub {
       font-size: 1rem;
       font-weight: 300;
-      color: var(--mid);
-      max-width: 440px;
-      margin-bottom: 2.5rem;
-      line-height: 1.7;
+      color: var(--text-soft);
+      max-width: 420px;
+      margin-bottom: 2.75rem;
+      line-height: 1.75;
     }
 
     .hero-badges {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.65rem;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 3rem;
+      margin-bottom: 3.5rem;
     }
 
     .badge {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 500;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 0.45rem 1rem;
+      padding: 0.4rem 1rem;
       border-radius: 100px;
-      border: 1px solid;
+      border: 1px solid var(--badge-border);
+      color: var(--badge-color);
+      background: var(--badge-bg);
+      transition: all 0.5s;
     }
 
-    .badge-sage  { border-color: var(--sage);  color: var(--sage-dark); background: rgba(107,143,113,0.08); }
-    .badge-terra { border-color: var(--terra);  color: var(--terra);     background: rgba(184,105,74,0.08); }
-    .badge-sand  { border-color: var(--mid);    color: var(--mid);       background: transparent; }
-
-    .hero-scroll {
+    .scroll-hint {
       position: absolute;
       bottom: 2.5rem;
       left: 50%;
@@ -158,527 +395,924 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      color: var(--mid);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
+      color: var(--text-soft);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
     .scroll-line {
       width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--mid), transparent);
-      animation: scrollDrop 1.8s ease-in-out infinite;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollFall 2s ease-in-out infinite;
     }
 
-    @keyframes scrollDrop {
+    @keyframes scrollFall {
       0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
-      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      55%  { transform: scaleY(1); transform-origin: top; }
       100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
     }
 
-    /* ── SECTIONS ── */
-    section { padding: 6rem 2rem; }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--terra);
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 300;
-      line-height: 1.2;
-      color: var(--charcoal);
-      margin-bottom: 1.5rem;
-    }
-
-    h2 em { font-style: italic; color: var(--sage-dark); }
-
-    p {
-      font-size: 0.95rem;
-      font-weight: 300;
-      color: var(--mid);
-      line-height: 1.8;
-    }
-
-    /* ── ABOUT ── */
-    #about { background: var(--white); }
+    /* ── YOGA ABOUT ── */
+    #yoga-about { background: var(--bg-alt); }
 
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      gap: 5rem;
       align-items: center;
     }
 
-    .about-text p + p { margin-top: 1rem; }
+    .about-text p + p { margin-top: 1.1rem; }
 
-    .stat-row {
-      display: flex;
-      gap: 2.5rem;
-      margin-top: 2.5rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--sand);
-    }
-
-    .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
-
-    .stat-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      font-weight: 300;
-      color: var(--charcoal);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .about-visual {
-      position: relative;
+    .about-visual-yoga {
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 1.5rem;
+      flex-direction: column;
     }
 
-    .mandala {
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: var(--sand);
+    .yoga-photo-main {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 3/4;
+    }
+
+    .yoga-photo-sm-row {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
+      gap: 1rem;
+      width: 100%;
+      max-width: 320px;
     }
 
-    .mandala::before {
-      content: '';
-      position: absolute;
-      inset: 16px;
-      border-radius: 50%;
-      border: 1px solid rgba(107,143,113,0.4);
+    .yoga-photo-sm {
+      flex: 1;
+      aspect-ratio: 1/1;
     }
 
-    .mandala::after {
-      content: '';
-      position: absolute;
-      inset: 32px;
-      border-radius: 50%;
-      border: 1px solid rgba(107,143,113,0.25);
-    }
+    /* ── YOGA CLASSES / OFFERINGS ── */
+    #yoga-classes { background: var(--bg); }
 
-    .mandala-inner {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--sage);
-      opacity: 0.25;
+    .class-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
     }
-
-    .mandala-text {
-      position: absolute;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-style: italic;
-      color: var(--sage-dark);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── CLASSES ── */
-    #classes { background: var(--cream); }
 
     .class-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 2.5rem;
-      margin-top: 2.5rem;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 2rem;
-      align-items: start;
-      border: 1px solid var(--sand);
-      transition: box-shadow 0.3s, transform 0.3s;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.25rem;
+      transition: all 0.3s ease, background 0.5s;
     }
 
     .class-card:hover {
-      box-shadow: 0 8px 32px rgba(107,143,113,0.12);
-      transform: translateY(-2px);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
     }
 
     .class-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      background: rgba(107, 143, 113, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      flex-shrink: 0;
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
     }
 
-    .class-body h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
+    .class-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
       font-weight: 400;
-      color: var(--charcoal);
+      color: var(--text-main);
       margin-bottom: 0.4rem;
+      transition: color 0.5s;
     }
 
     .class-meta {
       font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--terra);
-      margin-bottom: 0.75rem;
-    }
-
-    .class-body p { font-size: 0.9rem; }
-
-    .free-tag {
-      display: inline-block;
-      margin-top: 1rem;
-      font-size: 0.7rem;
-      font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 0.35rem 0.85rem;
-      border-radius: 100px;
-      background: rgba(107, 143, 113, 0.12);
-      color: var(--sage-dark);
-      border: 1px solid rgba(107,143,113,0.3);
+      color: var(--sand);
+      margin-bottom: 1rem;
     }
 
-    /* ── PLAYLIST ── */
-    #playlist { background: var(--charcoal); }
+    .class-card p { font-size: 0.9rem; }
 
-    #playlist .section-label { color: var(--terra); }
-    #playlist h2 { color: var(--cream); }
-    #playlist h2 em { color: #A8C9AE; }
-    #playlist p  { color: rgba(247,243,238,0.6); }
+    /* ── SPOTIFY / PLAYLIST ── */
+    #yoga-playlist { background: var(--bg-alt); }
 
     .playlist-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
       align-items: center;
-      margin-top: 2.5rem;
     }
 
-    .playlist-copy p + p { margin-top: 1rem; }
-
-    .spotify-wrap {
+    .spotify-embed {
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
     }
 
-    /* ── OPEN TO WORK ── */
-    #contact { background: var(--sage-dark); }
+    /* ── BREATHING ROOM ── */
+    #breathing-room {
+      background: var(--navy);
+      text-align: center;
+      padding: 8rem 2rem;
+    }
 
-    #contact .section-label { color: rgba(247,243,238,0.6); }
+    #breathing-room .section-label { color: var(--fog); opacity: 0.6; }
 
-    #contact h2 {
-      color: var(--cream);
+    #breathing-room h2 {
+      color: var(--fog);
       margin-bottom: 0.75rem;
     }
 
-    #contact h2 em { color: #C8DFCa; }
+    #breathing-room h2 em { color: rgba(173,181,201,0.7); }
 
-    #contact > .container > p {
-      color: rgba(247, 243, 238, 0.75);
-      max-width: 480px;
-      margin-bottom: 2.5rem;
+    #breathing-room > .container > p {
+      color: rgba(173,181,201,0.55);
+      max-width: 360px;
+      margin: 0 auto 4rem;
     }
 
-    .contact-options {
+    .orb-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 280px;
+      position: relative;
+    }
+
+    .orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(173,181,201,0.5), rgba(84,99,138,0.3));
+      box-shadow:
+        0 0 0 20px rgba(84,99,138,0.12),
+        0 0 0 40px rgba(84,99,138,0.07),
+        0 0 60px rgba(84,99,138,0.25);
+      animation: breathe 12s ease-in-out infinite;
+      position: relative;
+      z-index: 2;
+    }
+
+    .orb-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(173,181,201,0.15);
+      animation: breathe-ring 12s ease-in-out infinite;
+    }
+
+    .orb-ring-1 { width: 200px; height: 200px; animation-delay: 0s; }
+    .orb-ring-2 { width: 280px; height: 280px; animation-delay: 0.3s; }
+    .orb-ring-3 { width: 360px; height: 360px; animation-delay: 0.6s; }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50%       { transform: scale(1.55); opacity: 1; }
+    }
+
+    @keyframes breathe-ring {
+      0%, 100% { transform: scale(0.75); opacity: 0.6; }
+      50%       { transform: scale(1); opacity: 0.2; }
+    }
+
+    .orb-label {
+      margin-top: 4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(173,181,201,0.35);
+    }
+
+    .breathe-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: rgba(173,181,201,0.4);
+      margin-top: 0.5rem;
+      height: 1.5em;
+      transition: opacity 0.8s ease;
+    }
+
+    /* ── YOGA CONTACT ── */
+    #yoga-contact { background: var(--surface); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       ████  9-TO-5 (CORPORATE) SECTIONS
+    ═══════════════════════════════════════════ */
+
+    /* ── CORP HERO ── */
+    #corp-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8rem 3rem 6rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+    }
+
+    #corp-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 90% 10%, rgba(84,99,138,0.25) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 10% 90%, rgba(159,145,110,0.12) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .corp-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .corp-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 1.5rem;
+    }
+
+    #corp-hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--fog);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    #corp-hero h1 em {
+      font-style: italic;
+      color: rgba(173,181,201,0.55);
+    }
+
+    .corp-hero-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(173,181,201,0.6);
+      max-width: 480px;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+
+    .corp-hero-badges {
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .corp-hero-links {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1.75rem;
-      border-radius: 100px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+    /* ── CORP ABOUT ── */
+    #corp-about { background: var(--bg-alt); }
+
+    .corp-about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .corp-photo-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .corp-photo-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+    }
+
+    .corp-photo-sm {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    .corp-detail-row {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--card-border);
+      flex-wrap: wrap;
+    }
+
+    .corp-detail { display: flex; flex-direction: column; gap: 0.25rem; }
+
+    .corp-detail-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: var(--fog);
+      line-height: 1;
+    }
+
+    .corp-detail-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    /* ── PUBLICATIONS ── */
+    #corp-publications { background: var(--bg); }
+
+    .pub-list {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .pub-item {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--card-border);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      transition: opacity 0.2s;
+    }
+
+    .pub-item:first-child { border-top: 1px solid var(--card-border); }
+
+    .pub-item:hover { opacity: 0.8; }
+
+    .pub-year {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--sand);
+      padding-top: 0.2rem;
+      width: 3.5rem;
+    }
+
+    .pub-content h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+      transition: color 0.5s;
+    }
+
+    .pub-meta {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    a.pub-item {
       text-decoration: none;
-      transition: all 0.2s;
+      color: inherit;
       cursor: pointer;
-      border: none;
+    }
+    .pub-arrow {
+      color: var(--sand);
+      font-size: 1rem;
+      padding-top: 0.15rem;
+      opacity: 0.5;
     }
 
-    .btn-light {
-      background: var(--cream);
-      color: var(--sage-dark);
+    /* ── CORP RESUME ── */
+    #corp-resume { background: var(--bg-alt); }
+
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
     }
 
-    .btn-light:hover {
-      background: var(--white);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    .resume-col h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-main);
+      margin-bottom: 1.75rem;
+      transition: color 0.5s;
     }
 
-    .btn-outline {
-      background: transparent;
-      color: var(--cream);
-      border: 1px solid rgba(247,243,238,0.4);
+    .resume-entry {
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
     }
 
-    .btn-outline:hover {
-      background: rgba(247,243,238,0.08);
-      border-color: var(--cream);
+    .resume-entry:last-child { border-bottom: none; margin-bottom: 0; }
+
+    .resume-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 0.2rem;
+      transition: color 0.5s;
     }
 
-    /* ── FOOTER ── */
+    .resume-org {
+      font-size: 0.78rem;
+      color: var(--sand);
+      margin-bottom: 0.2rem;
+    }
+
+    .resume-dates {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      letter-spacing: 0.05em;
+    }
+
+    .resume-cta {
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* ── CORP CONTACT ── */
+    #corp-contact { background: var(--surface); }
+
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
     footer {
-      background: var(--charcoal);
+      background: var(--footer-bg);
       padding: 2rem 3rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid rgba(247,243,238,0.08);
+      border-top: 1px solid rgba(173,181,201,0.07);
+      transition: background 0.5s;
     }
 
     footer .logo {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'DM Serif Display', serif;
       font-size: 1rem;
-      font-weight: 400;
-      color: rgba(247,243,238,0.5);
+      color: var(--footer-text);
       text-decoration: none;
     }
 
     footer p {
-      font-size: 0.75rem;
-      color: rgba(247,243,238,0.35);
+      font-size: 0.72rem;
+      color: var(--footer-text);
+      opacity: 0.5;
     }
 
-    /* ── RESPONSIVE ── */
+    /* ─────────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────────── */
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      nav ul { gap: 1.5rem; }
+      nav { padding: 1rem 1.25rem; }
+      nav ul { gap: 1rem; }
+      nav ul li.hide-mobile { display: none; }
 
       .about-grid,
-      .playlist-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .playlist-grid,
+      .contact-grid,
+      .corp-about-grid,
+      .resume-grid,
+      .class-grid { grid-template-columns: 1fr; gap: 2.5rem; }
 
-      .about-visual { order: -1; }
-      .mandala { width: 200px; height: 200px; }
+      #corp-hero { padding: 8rem 1.5rem 4rem; }
+      #corp-hero h1 { font-size: clamp(2.8rem, 9vw, 4rem); }
 
-      .class-card { grid-template-columns: 1fr; gap: 1rem; }
+      .pub-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .pub-year { width: auto; }
 
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-
-      section { padding: 4rem 1.5rem; }
+      section { padding: 5rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="logo">michaela kotarba</a>
-    <ul>
-      <li><a href="#about">about</a></li>
-      <li><a href="#classes">classes</a></li>
-      <li><a href="#playlist">playlist</a></li>
-      <li><a href="#contact">contact</a></li>
-    </ul>
-  </nav>
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav>
+  <a href="#" class="logo">michaela kotarba</a>
+  <ul>
+    <!-- yoga nav -->
+    <li class="yoga-only hide-mobile"><a href="#yoga-about">about</a></li>
+    <li class="yoga-only hide-mobile"><a href="#yoga-classes">classes</a></li>
+    <li class="yoga-only hide-mobile"><a href="#yoga-playlist">playlist</a></li>
+    <li class="yoga-only hide-mobile"><a href="#breathing-room">breathe</a></li>
+    <li class="yoga-only hide-mobile"><a href="#yoga-contact">contact</a></li>
+    <!-- corp nav -->
+    <li class="corp-only hide-mobile"><a href="#corp-about">about</a></li>
+    <li class="corp-only hide-mobile"><a href="#corp-publications">writing</a></li>
+    <li class="corp-only hide-mobile"><a href="#corp-resume">résumé</a></li>
+    <li class="corp-only hide-mobile"><a href="#corp-contact">contact</a></li>
+    <!-- toggle -->
+    <li>
+      <button class="mode-toggle" onclick="toggleMode()">
+        <span class="toggle-dot"></span>
+        <span id="toggle-label">9 to 5</span>
+      </button>
+    </li>
+  </ul>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <p class="hero-eyebrow">yoga instructor, mover, &amp; forever student</p>
-    <h1>move with<br /><em>michaela</em></h1>
-    <p class="hero-sub">
-      let curiosity lead, intention guide, and wonder emerge 
-    </p>
-    <div class="hero-badges">
-      <span class="badge badge-sage">RYT-200</span>
-      <span class="badge badge-terra">Raleigh, NC</span>
-      <span class="badge badge-sand">Vinyasa Flows</span>
-    </div>
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      scroll
-    </div>
-  </section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-text">
-          <span class="section-label">About me</span>
-          <h2>raised in the studio,<br /><em>grounded on the mat.</em></h2>
-          <p>
-            Movement has always been in my life. I grew up in Winston-Salem, NC,
-            and started dancing when I was 3 years old. Dance shaped who I am today, strengthening my work ethic 
-            and fostering my creative identity. More importantly, dance empowered me to share movement with others. 
-            My first job was in the studio, teaching tap, jazz, and contemporary to students aged 3 and up.
-          </p>
-          <p>
-            At 16, I was introduced to hot yoga in the style of 26 postures... and I was hooked. I drove myself to the gym
-            to join class at 6 a.m. before school every Friday. While seeking my degree in Psychology and Computer Science 
-            at Duke University, I studied Kundalini yoga under Dr. Keval Kaur Khalsa and worked with Y.O.G.A. for Youth 
-            researching the impact of yoga on middle schooler's mental health. Our team hosted the 2021 Embodied Learning Summit,
-            a conference focused on returning to yoga’s roots as an embodied spiritual practice.
-          </p>
-          <p>
-            After 10 years of ebbing, flowing, and always coming back to the mat, I finally earned my 
-            RYT-200 certification! Now, I'm seeking to build community in Raleigh, NC and 
-            deepen my own relationship with the 8-limb path. I'm most comfortable teaching Vinyasa and 
-            passionate about helping others find their own strength, curiosity, and freedom on the mat.
-          </p>
-          <div class="stat-row">
-          </div>
+<!-- ═══════════════════════════════════════════
+     ████  5-TO-9 (YOGA) CONTENT
+═══════════════════════════════════════════ -->
+
+<!-- YOGA HERO -->
+<section id="yoga-hero" class="yoga-only">
+  <p class="yoga-eyebrow">yoga instructor · mover · forever student</p>
+  <h1>move with<br /><em>michaela</em></h1>
+  <p class="hero-sub">
+    let curiosity lead, intention guide, and wonder emerge
+  </p>
+  <div class="hero-badges">
+    <span class="badge">RYT-200</span>
+    <span class="badge">Raleigh, NC</span>
+    <span class="badge">Vinyasa Flows</span>
+    <span class="badge">Duke Psychology & CS</span>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- YOGA ABOUT -->
+<section id="yoga-about" class="yoga-only">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="section-label">About me</span>
+        <div class="rule"></div>
+        <h2>raised in the studio,<br /><em>grounded on the mat.</em></h2>
+        <p>
+          Movement has always been in my life. I grew up in Winston-Salem, NC, and started dancing 
+          when I was 3 years old. Dance shaped who I am today, strengthening my work ethic 
+          and fostering my creative identity. More importantly, dance empowered me to share movement with others.
+        </p>
+        <p style="margin-top:1.1rem">
+          At 16, I was introduced to hot yoga in the style of 26 postures — and I was hooked. 
+          While studying Psychology and Computer Science at Duke University, I studied Kundalini yoga 
+          under Dr. Keval Kaur Khalsa and researched the impact of yoga on adolescent mental health.
+        </p>
+        <p style="margin-top:1.1rem">
+          After 10 years of ebbing and flowing, I earned my RYT-200 certification. Now I'm building 
+          community in Raleigh and deepening my relationship with the 8-limb path — most comfortable 
+          in Vinyasa and passionate about helping others find strength, curiosity, and freedom.
+        </p>
+        <div style="margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap;">
+          <a class="btn btn-primary" href="#yoga-contact">Get in touch</a>
+          <a class="btn btn-outline" href="#" style="font-size:0.72rem;">View résumé ↗</a>
         </div>
-        <div class="about-visual">
-          <div class="mandala">
-            <div class="mandala-inner"></div>
-            <span class="mandala-text">breath · flow · presence</span>
-          </div>
+      </div>
+      <div class="about-visual-yoga">
+        <div class="photo-placeholder yoga-photo-main"></div>
+        <div class="yoga-photo-sm-row">
+          <div class="photo-placeholder yoga-photo-sm"></div>
+          <div class="photo-placeholder yoga-photo-sm"></div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CLASSES -->
-  <section id="classes">
-    <div class="container">
-      <span class="section-label">What I teach</span>
-      <h2>let's flow <br /><em>together</em></h2>
-      <p>
-        Yoga is for everybody, and everybody is welcome here.
-      </p>
-
+<!-- YOGA CLASSES -->
+<section id="yoga-classes" class="yoga-only">
+  <div class="container">
+    <span class="section-label">What I teach</span>
+    <div class="rule"></div>
+    <h2>let's flow<br /><em>together</em></h2>
+    <p style="max-width:460px">Yoga is for every body — and every body is welcome here.</p>
+    <div class="class-grid">
       <div class="class-card">
         <div class="class-icon">🌊</div>
-        <div class="class-body">
-          <h3>Friday Flows</h3>
-          <p class="class-meta">Bandwidth Employees Only &nbsp;·&nbsp; Free &nbsp;·&nbsp; All levels</p>
-          <p>
-            Every week, friends and I gather in the studio at work to practice together.
-            I lead a new flow every Friday -- usually to dance music! 
-          </p>
-        </div>
+        <h3>Studio Flows</h3>
+        <p class="class-meta"> Open to studio roles · All levels</p>
+        <p>For now, I'm teaching at home for friends and family, but I would love to find a Raleigh community to call home.
+          Reach out below if your space has room for one more. </p>
+        <a class="btn btn-outline" href="mailto:michaelakotarba@gmail.com" style="margin-top:1.5rem; font-size:0.72rem;">Get in touch</a>
       </div>
-
       <div class="class-card">
         <div class="class-icon">✨</div>
-        <div class="class-body">
-          <h3>Private &amp; Custom Sessions</h3>
-          <p class="class-meta">By request &nbsp;·&nbsp; Flexible format</p>
-          <p>
-            Interested in a private session for your friends, team, or bachelorette party?
-            Have a pop-up event coming up soon? I'd love to help make your vision come to life. 
-          </p>
-          </p>
-          <span class="btn btn-light"
-            href="mailto:michaelakotarba@gmail.com"
-            style="margin-top: 1.75rem;"
-            >Get in touch</span>
+        <h3>Private &amp; Custom Sessions</h3>
+        <p class="class-meta">By request · Flexible format</p>
+        <p>Interested in a private session for your friends, team, or bachelorette party? Have a pop-up event? I'd love to help make your vision come to life.</p>
+        <a class="btn btn-outline" href="mailto:michaelakotarba@gmail.com" style="margin-top:1.5rem; font-size:0.72rem;">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YOGA PLAYLIST -->
+<section id="yoga-playlist" class="yoga-only">
+  <div class="container">
+    <div class="playlist-grid">
+      <div class="playlist-copy">
+        <span class="section-label">Latest soundtrack</span>
+        <div class="rule"></div>
+        <h2>music that<br /><em>moves me</em></h2>
+        <p> 
+          I'm always making new playlists for practice. Add me on Spotify & let's trade soundtracks!
+        </p>
+        <br />
+        <a class="btn btn-outline" href="https://open.spotify.com/playlist/0fFtKf3PZMqzQJDpNlH0Vl?si=ec5896d7482b45f4" target="_blank" rel="noopener noreferrer">
+          Open in Spotify ↗
         </a>
+      </div>
+      <div class="spotify-embed">
+        <iframe
+          src="https://open.spotify.com/embed/playlist/0fFtKf3PZMqzQJDpNlH0Vl?utm_source=generator&theme=0"
+          width="100%"
+          height="380"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          title="Michaela's Yoga Playlist"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BREATHING ROOM -->
+<section id="breathing-room" class="yoga-only">
+  <div class="container" style="text-align:center">
+    <span class="section-label">breathing room</span>
+    <h2>wait!<br /><em>breathe.</em></h2>
+    <p style="max-width:340px; margin: 0 auto 4rem; color:rgba(173,181,201,0.5)">
+      take a scroll break & follow the orb for a 6-second box breath
+    </p>
+    <div class="orb-wrap">
+      <div class="orb-ring orb-ring-1"></div>
+      <div class="orb-ring orb-ring-2"></div>
+      <div class="orb-ring orb-ring-3"></div>
+      <div class="orb" id="breathe-orb"></div>
+    </div>
+    <p class="orb-label">6-second inhale · 6-second exhale</p>
+    <p class="breathe-text" id="breathe-text">inhale...</p>
+  </div>
+</section>
+
+<!-- YOGA CONTACT -->
+<section id="yoga-contact" class="yoga-only">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <span class="section-label">Contact</span>
+        <div class="rule"></div>
+        <h2>open to<br /><em>opportunities</em></h2>
+        <p>
+          I'm actively looking for teaching opportunities — studios, corporate wellness programs, 
+          or community events. Reach out and let's talk about what's possible.
+        </p>
+        <div class="contact-links">
+          <a class="btn btn-primary" href="mailto:michaelakotarba@gmail.com">Email me</a>
+          <a class="btn btn-outline" href="https://open.spotify.com/playlist/0fFtKf3PZMqzQJDpNlH0Vl" target="_blank">Hear this week's playlist</a>
+          <a class="btn btn-outline" href="#">Download résumé ↗</a>
+        </div>
+      </div>
+      <div>
+        <div class="photo-placeholder" style="width:100%; aspect-ratio:4/5;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ████  9-TO-5 (CORPORATE) CONTENT
+═══════════════════════════════════════════ -->
+
+<!-- CORP HERO -->
+<section id="corp-hero" class="corp-only">
+  <div class="corp-hero-inner">
+    <p class="corp-eyebrow">product manager · writer · ex-SWE</p>
+    <h1>Michaela<br />Kotarba<br /><em>—</em></h1>
+    <p class="corp-hero-desc">
+      Product manager with a software engineering foundation based in Raleigh, NC.
+    </p>
+    <div class="corp-hero-badges">
+      <span class="badge">Duke University</span>
+      <span class="badge">Technical PM</span>
+      <span class="badge">Raleigh, NC</span>
+    </div>
+    <div class="corp-hero-links">
+      <a class="btn btn-primary" href="#corp-contact">Get in touch</a>
+      <a class="btn btn-outline" href="#">View résumé ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- CORP ABOUT -->
+<section id="corp-about" class="corp-only">
+  <div class="container">
+    <div class="corp-about-grid">
+      <div class="about-text">
+        <span class="section-label">About</span>
+        <div class="rule"></div>
+        <h2>hey, thanks for<br />being here</h2>
+        <p>
+          I'm Michaela, and it's nice to meet you! I'm a Raleigh-based product manager and yoga teacher from Winston-Salem, NC.
+          I hold degrees in Psychology and Computer Science from Duke University, 
+          where my work sat at the intersection of mental health and technology.
+        </p>
+        <p style="margin-top:1.1rem">
+          My four years at Duke were mostly focused on behavioral health research, which you can read more 
+          about in the publications section below. I picked up a few computer science classes during my sophomore year to better
+          understand statistical analysis and data visualizations. A side quest quickly became a computer science degree and an 
+          early career in software engineering. I've since transitioned into product management and am currently working on a
+          product suite at Bandwidth made for developers, by developers. 
+        </p>
+        <p style="margin-top:1.1rem">
+          Outside of the workplace, you might find me on my yoga mat -- hence the 5-to-9 mode -- or parked at a coffee shop,
+          reading or putting pen to paper. I'm an avid journaler and an aspiring writer. I also love to hike, dance, and
+          spend time outside with my dog, Kaia.
+        </p>
+      </div>
+      <div class="corp-photo-col">
+        <div class="photo-placeholder corp-photo-main"></div>
+        <div class="photo-placeholder corp-photo-sm"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS & WRITING -->
+<section id="corp-publications" class="corp-only">
+  <div class="container">
+    <span class="section-label">Publications &amp; Writing</span>
+    <div class="rule"></div>
+    <h2>ideas worth<br /><em>sharing</em></h2>
+    <p style="max-width:500px">Everything from published research to blogs no one asked me for.</p>
+    <div class="pub-list">
+      <a href="https://www.bandwidth.com/blog/developer-experience-isnt-just-for-developers/" target="_blank" rel="noopener noreferrer" class="pub-item">
+        <span class="pub-year">2026</span>
+        <div class="pub-content">
+          <h3>Developer Experience isn’t just for developers anymore</h3>
+          <p class="pub-meta">Blog · Author · Bandwidth</p>
+        </div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/35632453/" target="_blank" rel="noopener noreferrer" class="pub-item">
+        <span class="pub-year">2022</span>
+        <div class="pub-content">
+          <h3>Internal and External Motivations and Risk Perception toward COVID-19 Vaccination in Adolescents in the U.S</h3>
+          <p class="pub-meta">Nationwide survey · Lead researcher · Duke University</p>
+        </div>
+        <span class="pub-arrow">↗</span>
+      </a>
+      <div class="pub-item">
+        <span class="pub-year">2021</span>
+        <div class="pub-content">
+          <h3>Healthcare Providers’ Vaccine Perceptions, Hesitancy, and Recommendation to Patients</h3>
+          <p class="pub-meta">Systematic review · Co-author · Duke University</p>
+        </div>
+        <span class="pub-arrow">↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORP RESUME -->
+<section id="corp-resume" class="corp-only">
+  <div class="container">
+    <span class="section-label">Experience</span>
+    <div class="rule"></div>
+    <h2>where I've<br /><em>been</em></h2>
+    <div class="resume-grid">
+      <div class="resume-col">
+        <h3>Work Experience</h3>
+        <div class="resume-entry">
+          <p class="resume-title">Product Manager</p>
+          <p class="resume-org">Bandwidth - Developer Experience</p>
+          <p class="resume-dates">Ongoing</p>
+        </div>
+        <div class="resume-entry">
+          <p class="resume-title">Software Engineer</p>
+          <p class="resume-org">Bandwidth - Voice Routing</p>
+          <p class="resume-dates">2021 – 2025</p>
+        </div>
+        <div class="resume-entry">
+          <p class="resume-title">Data Science Intern</p>
+          <p class="resume-org">Duke University</p>
+          <p class="resume-dates">Summer 2020</p>
+        </div>
+        <div class="resume-entry">
+          <p class="resume-title">Undergraduate Researcher</p>
+          <p class="resume-org">Duke University</p>
+          <p class="resume-dates">2019 – 2021</p>
+        </div>
+      </div>
+      <div class="resume-col">
+        <h3>Education</h3>
+        <div class="resume-entry">
+          <p class="resume-title">B.S. Psychology &amp; Computer Science</p>
+          <p class="resume-org">Duke University</p>
+          <p class="resume-dates">Graduated 2022</p>
+        </div>
+        <div class="resume-entry">
+          <p class="resume-title">RYT-200 Certification</p>
+          <p class="resume-org">Dose Yoga, Yoga Alliance</p>
+          <p class="resume-dates">2026</p>
         </div>
       </div>
     </div>
-  </section>
+    <div class="resume-cta">
+      <a class="btn btn-primary" href="#">Download full résumé ↗</a>
+      <a class="btn btn-outline" href="#corp-contact">Get in touch</a>
+    </div>
+  </div>
+</section>
 
-  <!-- PLAYLIST -->
-  <section id="playlist">
-    <div class="container">
-      <div class="playlist-grid">
-        <div class="playlist-copy">
-          <span class="section-label">latest soundtrack</span>
-          <h2>music that<br /><em>moves me</em></h2>
-          <p>
-            I love curating playlists for practice that inspire creativity
-            and confidence. Add me on Spotify & hit play before you hit the mat.
-          </p>
-          <br />
-          <a
-            class="btn btn-outline"
-            href="https://open.spotify.com/playlist/0fFtKf3PZMqzQJDpNlH0Vl?si=ec5896d7482b45f4"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open in Spotify
-          </a>
-        </div>
-        <div class="spotify-wrap">
-          <iframe
-            style="border-radius: 12px;"
-            src="https://open.spotify.com/embed/playlist/0fFtKf3PZMqzQJDpNlH0Vl?utm_source=generator&theme=0"
-            width="100%"
-            height="380"
-            frameBorder="0"
-            allowfullscreen=""
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-            title="Michaela's Yoga Playlist"
-          ></iframe>
+<!-- CORP CONTACT -->
+<section id="corp-contact" class="corp-only">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <span class="section-label">Contact</span>
+        <div class="rule"></div>
+        <h2>let's build<br /><em>something</em></h2>
+        <p>
+          I'm especially interested in work that sits at the intersection of human 
+          behavior and technology.
+        </p>
+        <div class="contact-links">
+          <a class="btn btn-primary" href="mailto:michaelakotarba@gmail.com">Email me</a>
+          <a class="btn btn-outline" href="#">LinkedIn ↗</a>
+          <a class="btn btn-outline" href="#">Download résumé ↗</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CONTACT / OPEN TO WORK -->
-  <section id="contact">
-    <div class="container">
-      <h2>open to opportunities</h2>
-      <p>
-        I'm actively looking for teaching opportunities — studios, corporate
-        wellness programs, or community events. Reach out, and we
-        can talk about what's possible.
-      </p>
-      <div class="contact-options">
-        <a
-          class="btn btn-light"
-          href="mailto:michaelakotarba@gmail.com"
-        >
-          Get in touch
-        </a>
-        <a
-          class="btn btn-outline"
-          href="https://open.spotify.com/playlist/2lfLw4ho5fyW0bekAb8qIy"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Hear this week's playlist
-        </a>
+      <div>
+        <div class="photo-placeholder" style="width:100%; aspect-ratio:1/1; border-radius:50%;"></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <a href="#" class="logo">michaela kotarba</a>
-    <p>RYT-200 &nbsp;·&nbsp; Vinyasa &nbsp;·&nbsp; Raleigh, NC</p>
-  </footer>
 
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <a href="#" class="logo">michaela kotarba</a>
+  <p class="yoga-only">RYT-200 · Vinyasa · Raleigh, NC</p>
+  <p class="corp-only">Psychology &amp; CS · Duke · Raleigh, NC</p>
+</footer>
+
+
+<script>
+  /* ── MODE TOGGLE ── */
+  const body = document.body;
+  const label = document.getElementById('toggle-label');
+  let isCorp = false;
+
+  function toggleMode() {
+    isCorp = !isCorp;
+    body.classList.toggle('corp', isCorp);
+    label.textContent = isCorp ? '5 to 9' : '9 to 5';
+    // scroll to top on switch
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── BREATHING ORB TEXT ── */
+  const breatheText = document.getElementById('breathe-text');
+  let breathePhase = 'inhale';
+
+  function updateBreathe() {
+    breathePhase = breathePhase === 'inhale' ? 'exhale' : 'inhale';
+    breatheText.style.opacity = '0';
+    setTimeout(() => {
+      breatheText.textContent = breathePhase + '...';
+      breatheText.style.opacity = '1';
+    }, 400);
+  }
+
+  // 12s cycle: 6s inhale, 6s exhale
+  setInterval(updateBreathe, 6000);
+</script>
 </body>
 </html>
