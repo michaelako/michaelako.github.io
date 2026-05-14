@@ -274,7 +274,7 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
 
-    .photo-placeholder {
+    /*.photo-placeholder {
       background: var(--surface);
       border-radius: 16px;
       display: flex;
@@ -284,6 +284,20 @@
       position: relative;
       transition: background 0.5s;
       height: auto;
+    }*/
+    .photo-placeholder {
+      background: var(--surface);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.5s;
+  
+      width: 100%;
+      /* Force a clean, standard 3:4 portrait aspect ratio box */
+      aspect-ratio: 3 / 4; 
     }
 
     .photo-placeholder::after {
@@ -1006,7 +1020,7 @@
             <img src="yoga-photo.jpg" alt="Michaela yoga photo" class="portfolio-img">
           </div>
           <div class="photo-placeholder yoga-photo-sm">
-            <img src="another-yoga-photo.JPG" alt="Michaela yoga photo" class="portfolio-img">
+            <img src="another-yoga-photo.JPG" alt="another Michaela yoga photo" class="portfolio-img">
           </div>
         </div>
       </div>
