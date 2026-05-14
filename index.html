@@ -288,16 +288,14 @@
     .photo-placeholder {
       background: var(--surface);
       border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block; /* Changed from flex to block to fix layout scaling issues */
       overflow: hidden;
       position: relative;
       transition: background 0.5s;
-  
       width: 100%;
-      /* Force a clean, standard 3:4 portrait aspect ratio box */
-      aspect-ratio: 3 / 4; 
+  
+      /* Forces a standard, natural widescreen box ratio (like a camera sensor) */
+      aspect-ratio: 4 / 3; 
     }
 
     .photo-placeholder::after {
