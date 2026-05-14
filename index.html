@@ -307,6 +307,14 @@
       opacity: 0.4;
       height: auto;
     }
+    .portfolio-img {
+      width: 100%;
+      height: 100%;
+      /* Crops just enough to fill the 4:3 box perfectly without extreme zoom */
+      object-fit: cover; 
+      /* Ensures the focus of the crop stays centered */
+      object-position: center; 
+    }
 
     /* divider line accent */
     .rule {
