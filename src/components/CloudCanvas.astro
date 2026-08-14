@@ -1,0 +1,152 @@
+---
+/**
+ * Drifting cloud layer — ported from the design prototype.
+ *
+ * Seven ellipse blobs on a deliberately small backing store (half the
+ * viewport, capped at 2x DPR) blurred by 54px. The blur hides the low
+ * resolution and keeps the whole thing cheap.
+ *
+ * There is intentionally no mouse interaction: an earlier pointer-trail
+ * version was removed by the designer on purpose. Do not reintroduce it.
+ */
+---
+
+<canvas id="clouds" class="bg-clouds" aria-hidden="true"></canvas>
+
+<script>
+  type Blob = {
+    bx: number;
+    by: number;
+    r: number;
+    ar: number;
+    sp: number;
+    ph: number;
+    c: number;
+  };
+
+  const BLOBS: Blob[] = [
+    { bx: 0.18, by: 0.22, r: 0.4, ar: 0.72, sp: 0.045, ph: 0.4, c: 0 },
+    { bx: 0.74, by: 0.16, r: 0.36, ar: 0.85, sp: 0.033, ph: 2.1, c: 1 },
+    { bx: 0.52, by: 0.58, r: 0.46, ar: 0.62, sp: 0.027, ph: 3.6, c: 2 },
+    { bx: 0.12, by: 0.78, r: 0.38, ar: 0.8, sp: 0.038, ph: 1.2, c: 3 },
+    { bx: 0.88, by: 0.7, r: 0.42, ar: 0.7, sp: 0.031, ph: 5.0, c: 0 },
+    { bx: 0.36, by: 0.05, r: 0.3, ar: 0.9, sp: 0.052, ph: 4.2, c: 4 },
+    { bx: 0.66, by: 0.92, r: 0.34, ar: 0.75, sp: 0.041, ph: 0.9, c: 2 },
+  ];
+
+  const PALETTE = {
+    light: [
+      'rgba(206,178,238,A)',
+      'rgba(248,214,218,A)',
+      'rgba(178,150,222,A)',
+      'rgba(255,252,255,A)',
+      'rgba(196,214,240,A)',
+    ],
+    dark: [
+      'rgba(96,70,126,A)',
+      'rgba(132,90,146,A)',
+      'rgba(58,42,88,A)',
+      'rgba(160,126,186,A)',
+      'rgba(70,58,124,A)',
+    ],
+  } as const;
+
+  const ALPHAS = {
+    light: [0.72, 0.6, 0.6, 0.66, 0.46],
+    dark: [0.66, 0.54, 0.62, 0.36, 0.5],
+  } as const;
+
+  const canvas = document.getElementById('clouds') as HTMLCanvasElement | null;
+  const ctx = canvas?.getContext('2d');
+  if (canvas && ctx) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // Phones get fewer, cheaper blobs — at that size the difference is
+    // invisible and it saves the battery.
+    const isPhone = () => window.innerWidth <= 900;
+
+    let t = 0;
+    let last = 0;
+    let raf = 0;
+
+    function resize() {
+      if (!canvas) return;
+      const scale = Math.min(window.devicePixelRatio || 1, 2) * (isPhone() ? 0.35 : 0.5);
+      canvas.width = Math.max(32, Math.round(window.innerWidth * scale));
+      canvas.height = Math.max(32, Math.round(window.innerHeight * scale));
+    }
+
+    function draw() {
+      if (!canvas || !ctx) return;
+      const w = canvas.width;
+      const h = canvas.height;
+      const mode = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      const palette = PALETTE[mode];
+      const alphas = ALPHAS[mode];
+      const blobs = isPhone() ? BLOBS.slice(0, 5) : BLOBS;
+
+      ctx.clearRect(0, 0, w, h);
+
+      for (const b of blobs) {
+        const wander =
+          0.055 * Math.sin(t * b.sp * 6.28 + b.ph) + 0.032 * Math.sin(t * b.sp * 3.4 + b.ph * 1.7);
+        const wander2 =
+          0.045 * Math.sin(t * b.sp * 5.1 + b.ph * 2.3) + 0.028 * Math.cos(t * b.sp * 2.6 + b.ph);
+        const x = (b.bx + wander) * w;
+        const y = (b.by + wander2) * h;
+        const r = b.r * Math.min(w, h) * (1 + 0.07 * Math.sin(t * b.sp * 4.2 + b.ph));
+        const a = alphas[b.c]!;
+        const color = palette[b.c]!;
+
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+        g.addColorStop(0, color.replace('A', a.toFixed(3)));
+        g.addColorStop(0.55, color.replace('A', (a * 0.45).toFixed(3)));
+        g.addColorStop(1, color.replace('A', '0'));
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(0.4 * Math.sin(t * b.sp * 2 + b.ph));
+        ctx.scale(1, b.ar);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, 6.2832);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function loop(ts: number) {
+      raf = requestAnimationFrame(loop);
+      const dt = Math.min(50, ts - (last || ts));
+      last = ts;
+      t += dt / 1000;
+      draw();
+    }
+
+    function start() {
+      cancelAnimationFrame(raf);
+      if (reduceMotion.matches) {
+        // Freeze on a single rendered frame rather than an empty canvas.
+        draw();
+      } else {
+        last = 0;
+        raf = requestAnimationFrame(loop);
+      }
+    }
+
+    resize();
+    start();
+
+    window.addEventListener('resize', () => {
+      resize();
+      if (reduceMotion.matches) draw();
+    });
+
+    reduceMotion.addEventListener('change', start);
+
+    // The palette is read per frame, so a theme change only needs a repaint
+    // when the loop is frozen.
+    document.addEventListener('themechange', () => {
+      if (reduceMotion.matches) draw();
+    });
+  }
+</script>

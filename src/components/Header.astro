@@ -1,0 +1,53 @@
+---
+import { site } from '../content';
+---
+
+<header class="header">
+  <span class="header__brand">{site.brand}</span>
+
+  <div class="toggle" role="group" aria-label="Site mode">
+    <button
+      type="button"
+      class="toggle__btn toggle__btn--day"
+      data-theme-set="light"
+      aria-pressed="true"
+    >
+      5–9
+    </button>
+    <button
+      type="button"
+      class="toggle__btn toggle__btn--night"
+      data-theme-set="dark"
+      aria-pressed="false"
+    >
+      9–5
+    </button>
+  </div>
+</header>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-set]');
+
+  function sync(theme: string) {
+    for (const btn of buttons) {
+      btn.setAttribute('aria-pressed', String(btn.dataset.themeSet === theme));
+    }
+  }
+
+  for (const btn of buttons) {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeSet === 'dark' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = theme;
+      try {
+        localStorage.setItem('theme', theme);
+      } catch (e) {
+        /* storage disabled — the theme still applies for this session */
+      }
+      sync(theme);
+      document.dispatchEvent(new CustomEvent('themechange', { detail: theme }));
+    });
+  }
+
+  // ThemeScript already set data-theme before paint; catch the buttons up.
+  sync(document.documentElement.dataset.theme ?? 'light');
+</script>

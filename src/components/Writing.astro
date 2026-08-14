@@ -1,0 +1,24 @@
+---
+import { writing } from '../content';
+---
+
+<div class="writing">
+  <div class="kicker">{writing.kicker}</div>
+
+  {
+    writing.items.map((item) =>
+      item.href ? (
+        <a class="writing__row" href={item.href} target="_blank" rel="noopener noreferrer">
+          <span class="writing__title">{item.title}</span>
+          <span class="writing__year">{item.year}</span>
+        </a>
+      ) : (
+        /* No public link for this one — it renders as a plain row. */
+        <div class="writing__row">
+          <span class="writing__title">{item.title}</span>
+          <span class="writing__year">{item.year}</span>
+        </div>
+      )
+    )
+  }
+</div>

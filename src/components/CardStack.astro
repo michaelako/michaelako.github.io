@@ -1,0 +1,89 @@
+---
+/**
+ * The signature interaction: one row of cards where exactly one is expanded
+ * and the rest are 112px slivers. Expansion is a flex-grow transition, so
+ * cards to the left of the active one stay left and cards to the right stay
+ * right — walking 1→4 slides the stack leftward.
+ *
+ * Used twice, once per mode. The two instances keep independent active
+ * indices because state lives on each row's own data-active attribute.
+ */
+
+interface PhotoCard {
+  caption: string;
+  src: string | null;
+  alt: string;
+}
+
+interface TextCard {
+  caption: string;
+  paragraphs: readonly string[];
+}
+
+interface Props {
+  variant: 'photos' | 'text';
+  label: string;
+  cards: readonly PhotoCard[] | readonly TextCard[];
+}
+
+const { variant, label, cards } = Astro.props;
+
+const isPhoto = (_card: PhotoCard | TextCard): _card is PhotoCard => variant === 'photos';
+---
+
+<div class={`stack stack--${variant}`} data-active="0" aria-label={label}>
+  {
+    cards.map((card, i) => (
+      <div class="stack__card" data-expanded={i === 0 ? 'true' : 'false'}>
+        {isPhoto(card) ? (
+          <div class="stack__media">
+            {card.src ? (
+              <img src={card.src} alt={card.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+            ) : (
+              <div class="stack__placeholder">
+                <span>photo slot</span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div class="stack__panel">
+            {card.paragraphs.map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
+        )}
+
+        <button
+          type="button"
+          class="stack__trigger"
+          data-index={i}
+          aria-label={card.caption}
+          aria-expanded={i === 0 ? 'true' : 'false'}
+        >
+          <span class="stack__caption">{card.caption}</span>
+        </button>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  for (const stack of document.querySelectorAll<HTMLElement>('.stack')) {
+    const cards = Array.from(stack.querySelectorAll<HTMLElement>('.stack__card'));
+
+    stack.addEventListener('click', (event) => {
+      const trigger = (event.target as HTMLElement).closest<HTMLButtonElement>('.stack__trigger');
+      if (!trigger || !stack.contains(trigger)) return;
+
+      const index = Number(trigger.dataset.index);
+      if (!Number.isInteger(index)) return;
+
+      stack.dataset.active = String(index);
+      cards.forEach((card, i) => {
+        const expanded = String(i === index);
+        card.dataset.expanded = expanded;
+        card.querySelector('.stack__trigger')?.setAttribute('aria-expanded', expanded);
+      });
+    });
+  }
+</script>
