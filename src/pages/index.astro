@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import CardStack from '../components/CardStack.astro';
+import About from '../components/About.astro';
+import Writing from '../components/Writing.astro';
+import Contact from '../components/Contact.astro';
+import { photos, work } from '../content';
+---
+
+<Base>
+  <Header />
+  <Hero />
+
+  {/* ── 5–9 ─────────────────────────────────────────────────────── */}
+  <section class="section day-only">
+    <CardStack variant="photos" label="Teaching" cards={photos} />
+  </section>
+
+  <section class="section day-only">
+    <About />
+  </section>
+
+  {/* ── 9–5 ─────────────────────────────────────────────────────── */}
+  <section class="section night-only">
+    <CardStack variant="text" label="Work" cards={work} />
+  </section>
+
+  <section class="section section--writing night-only">
+    <Writing />
+  </section>
+
+  <Contact />
+</Base>
+
+<style>
+  .section--writing {
+    padding-bottom: clamp(60px, 10vh, 130px);
+  }
+</style>

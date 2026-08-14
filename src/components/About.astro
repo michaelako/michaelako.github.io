@@ -1,0 +1,32 @@
+---
+import { about, playlist } from '../content';
+---
+
+<div class="about">
+  <div class="about__text">
+    <div class="kicker">{about.kicker}</div>
+    {about.paragraphs.map((p) => <p>{p}</p>)}
+  </div>
+
+  <div class="about__playlist">
+    <div class="kicker">{playlist.kicker}</div>
+    <iframe
+      title={playlist.title}
+      src={`https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator`}
+      height="352"
+      allowfullscreen
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>
+  </div>
+</div>
+
+<script>
+  // Spotify's compact embed below 480px, per the mobile plan.
+  const frame = document.querySelector<HTMLIFrameElement>('.about__playlist iframe');
+  if (frame) {
+    const compact = window.matchMedia('(max-width: 480px)');
+    const apply = () => frame.setAttribute('height', compact.matches ? '152' : '352');
+    apply();
+    compact.addEventListener('change', apply);
+  }
+</script>

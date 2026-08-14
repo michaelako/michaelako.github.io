@@ -1,0 +1,100 @@
+/*
+ * Design tokens — transcribed from the design handoff README's token table.
+ * Every color, radius and motion value on the site resolves through here, so
+ * retheming is a single-file change. Nothing outside this file should use a
+ * color literal.
+ */
+
+:root {
+  /* ── Background ─────────────────────────────────────────────────── */
+  --page-bg: #ece1f4;
+  --page-gradient:
+    radial-gradient(1100px 820px at 86% 4%, rgba(244, 206, 214, 0.85) 0%, rgba(244, 206, 214, 0) 58%),
+    radial-gradient(1000px 860px at 4% 96%, rgba(168, 136, 214, 0.8) 0%, rgba(168, 136, 214, 0) 60%),
+    radial-gradient(900px 700px at 50% 46%, rgba(226, 208, 246, 0.7) 0%, rgba(226, 208, 246, 0) 62%),
+    linear-gradient(154deg, #fdf9fc 0%, #eee3f6 26%, #d5c0ea 58%, #b79ad8 82%, #a184cc 100%);
+
+  /* ── Ink ────────────────────────────────────────────────────────── */
+  --ink: #2a1c30;
+  --ink-soft: #5a4a5f;
+  --ink-faint: #6f5f77;
+  --hairline: rgba(42, 28, 48, 0.16);
+
+  /* ── Accent ─────────────────────────────────────────────────────── */
+  --wisteria: #6b4f8a;
+  --cta-ink: #fdfbff;
+  --float-1: #5c4080;
+  --float-2: #7b5c9e;
+  --float-3: #74569f;
+
+  /* ── Surfaces ───────────────────────────────────────────────────── */
+  --card-frame: rgba(255, 255, 255, 0.72);
+  --card-shadow: 0 26px 60px rgba(58, 36, 86, 0.24);
+  --toggle-shell: rgba(42, 28, 48, 0.06);
+  --toggle-light-bg: rgba(255, 255, 255, 0.9);
+  --toggle-light-ink: #2a1c30;
+  --toggle-dark-bg: transparent;
+  --toggle-dark-ink: #5a4a5f;
+
+  /* Photo captions sit on top of imagery, so they are fixed light regardless
+     of theme. These two are the only values the design specifies as literals. */
+  --photo-caption-ink: #fdfbff;
+  --photo-caption-shadow: 0 2px 16px rgba(30, 16, 44, 0.55);
+
+  /* ── Mode-dependent section visibility ──────────────────────────── */
+  /* Both modes' markup lives in the DOM; CSS picks which one displays. This
+     is what lets the theme toggle stay a one-line JS change. */
+  --day-display: block;
+  --night-display: none;
+  --day-flex: flex;
+  --night-flex: none;
+
+  /* ── Geometry ───────────────────────────────────────────────────── */
+  --page-x: clamp(24px, 5vw, 72px);
+  --radius-card: 26px;
+  --radius-embed: 12px;
+  --radius-pill: 999px;
+  --card-gap: 14px;
+  --card-min: 112px;
+
+  /* ── Motion ─────────────────────────────────────────────────────── */
+  --ease-card: cubic-bezier(0.22, 0.82, 0.24, 1);
+  --dur-card: 760ms;
+  --dur-panel: 460ms;
+
+  /* ── Type ───────────────────────────────────────────────────────── */
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-ui: 'Karla', system-ui, sans-serif;
+}
+
+html[data-theme='dark'] {
+  --page-gradient:
+    radial-gradient(1100px 820px at 86% 4%, rgba(140, 96, 132, 0.75) 0%, rgba(140, 96, 132, 0) 58%),
+    radial-gradient(1000px 860px at 4% 96%, rgba(96, 68, 148, 0.85) 0%, rgba(96, 68, 148, 0) 60%),
+    radial-gradient(900px 700px at 50% 46%, rgba(74, 54, 104, 0.7) 0%, rgba(74, 54, 104, 0) 62%),
+    linear-gradient(154deg, #120c18 0%, #1e1527 26%, #33244c 58%, #452f68 84%, #543a7a 100%);
+
+  --ink: #f4ecf5;
+  --ink-soft: #cabbd0;
+  --ink-faint: #a191a9;
+  --hairline: rgba(244, 236, 245, 0.18);
+
+  --wisteria: #c1a6d8;
+  --cta-ink: #241a2c;
+  --float-1: #d3bfe8;
+  --float-2: #b49ad2;
+  --float-3: #9782bd;
+
+  --card-frame: rgba(255, 255, 255, 0.14);
+  --card-shadow: 0 26px 60px rgba(8, 4, 16, 0.5);
+  --toggle-shell: rgba(244, 236, 245, 0.09);
+  --toggle-light-bg: transparent;
+  --toggle-light-ink: #a191a9;
+  --toggle-dark-bg: rgba(244, 236, 245, 0.9);
+  --toggle-dark-ink: #241a2c;
+
+  --day-display: none;
+  --night-display: block;
+  --day-flex: none;
+  --night-flex: flex;
+}

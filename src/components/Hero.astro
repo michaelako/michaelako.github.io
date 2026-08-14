@@ -1,0 +1,23 @@
+---
+import { hero } from '../content';
+
+/* Both modes' labels are rendered; CSS shows the pair that matches the theme. */
+const modes = [
+  { labels: hero.day, cls: 'day-only' },
+  { labels: hero.night, cls: 'night-only' },
+] as const;
+---
+
+<section class="hero">
+  <h1 class="hero__name">{hero.name}</h1>
+
+  <div class="hero__floats">
+    {
+      modes.map(({ labels, cls }) =>
+        labels.map((label, i) => (
+          <span class={`hero__float hero__float--${i + 1} ${cls}`}>{label}</span>
+        ))
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import { contact, site } from '../content';
+---
+
+<section class="contact">
+  <div class="kicker day-only">{contact.day.kicker}</div>
+  <div class="kicker night-only">{contact.night.kicker}</div>
+
+  <h2 class="contact__heading">{contact.heading}</h2>
+
+  <div class="contact__actions">
+    <a class="contact__cta" href={`mailto:${site.email}`}>{contact.cta}</a>
+    <span class="contact__note day-only">{contact.day.note}</span>
+    <span class="contact__note night-only">{contact.night.note}</span>
+    <a class="contact__resume" href={contact.resume.href} target="_blank" rel="noopener noreferrer">
+      {contact.resume.label} ↗
+    </a>
+  </div>
+</section>

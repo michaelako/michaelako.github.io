@@ -1,0 +1,689 @@
+@import './tokens.css';
+
+/* ═══════════════════════════════════════════════════════════════════
+   Base
+   ═══════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  font-family: var(--font-ui);
+  color: var(--ink);
+}
+
+a {
+  color: var(--wisteria);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--float-2);
+}
+
+:focus-visible {
+  outline: 2px solid var(--wisteria);
+  outline-offset: 2px;
+}
+
+/* ── The two fixed background layers ─────────────────────────────── */
+
+.bg-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--page-gradient);
+}
+
+.bg-clouds {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: blur(54px);
+}
+
+.page {
+  position: relative;
+  z-index: 3;
+  min-height: 100dvh;
+}
+
+/* ── Mode-dependent sections ─────────────────────────────────────── */
+/* Both modes' markup is in the DOM; CSS decides which is shown, so the
+   toggle only ever has to set `data-theme` on <html>. */
+
+.day-only {
+  display: var(--day-display);
+}
+
+.night-only {
+  display: var(--night-display);
+}
+
+.day-only-inline {
+  display: var(--day-flex);
+}
+
+.night-only-inline {
+  display: var(--night-flex);
+}
+
+/* ── Shared bits ─────────────────────────────────────────────────── */
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.section {
+  padding: 0 var(--page-x) clamp(70px, 12vh, 150px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Header
+   ═══════════════════════════════════════════════════════════════════ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px var(--page-x) 0;
+}
+
+.header__brand {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--toggle-shell);
+  border: 1px solid var(--hairline);
+}
+
+.toggle__btn {
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.toggle__btn--day {
+  background: var(--toggle-light-bg);
+  color: var(--toggle-light-ink);
+}
+
+.toggle__btn--night {
+  background: var(--toggle-dark-bg);
+  color: var(--toggle-dark-ink);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Hero
+   ═══════════════════════════════════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  padding: clamp(70px, 13vh, 150px) var(--page-x) clamp(80px, 14vh, 170px);
+}
+
+.hero__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(58px, 12.5vw, 210px);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  max-width: 12ch;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+
+.hero__floats {
+  position: relative;
+  height: clamp(128px, 17vh, 190px);
+  margin-top: clamp(16px, 2.6vh, 30px);
+}
+
+.hero__float {
+  position: absolute;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(24px, 3.2vw, 42px);
+  white-space: nowrap;
+}
+
+.hero__float--1 {
+  left: 2%;
+  top: 0%;
+  color: var(--float-1);
+  animation: driftA 11s ease-in-out infinite alternate;
+}
+
+.hero__float--2 {
+  left: 34%;
+  top: 36%;
+  color: var(--float-2);
+  animation: driftB 14s ease-in-out infinite alternate;
+}
+
+.hero__float--3 {
+  left: 11%;
+  top: 70%;
+  color: var(--float-3);
+  animation: driftC 17s ease-in-out infinite alternate;
+}
+
+@keyframes driftA {
+  from { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
+  to   { transform: translate3d(14px, -22px, 0) rotate(1deg); }
+}
+
+@keyframes driftB {
+  from { transform: translate3d(0, 0, 0) rotate(1deg); }
+  to   { transform: translate3d(-20px, 16px, 0) rotate(-1.5deg); }
+}
+
+@keyframes driftC {
+  from { transform: translate3d(0, 0, 0) rotate(-0.5deg); }
+  to   { transform: translate3d(18px, 18px, 0) rotate(2deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Card stack — the signature interaction
+   ═══════════════════════════════════════════════════════════════════ */
+
+.stack {
+  display: flex;
+  align-items: stretch;
+  gap: var(--card-gap);
+  height: var(--stack-height);
+}
+
+.stack--photos {
+  --stack-height: min(82vh, 860px);
+  --collapsed-filter: saturate(0.82) brightness(0.94);
+}
+
+.stack--text {
+  --stack-height: min(78vh, 820px);
+  --collapsed-filter: brightness(0.94);
+}
+
+.stack__card {
+  position: relative;
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: var(--card-min);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--card-frame);
+  box-shadow: var(--card-shadow);
+  filter: var(--collapsed-filter);
+  transition:
+    flex-grow var(--dur-card) var(--ease-card),
+    filter var(--dur-card) ease;
+}
+
+.stack--text .stack__card {
+  border: 1px solid var(--hairline);
+}
+
+.stack__card[data-expanded='true'] {
+  flex-grow: 26;
+  filter: none;
+}
+
+/* The trigger covers the whole card so any part of a collapsed sliver is
+   clickable. Once expanded it stops swallowing pointer events, which lets
+   the text-card paragraphs be selected — clicking an already-open card is
+   a no-op anyway. It stays keyboard-focusable either way. */
+.stack__trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.stack__card[data-expanded='true'] .stack__trigger {
+  pointer-events: none;
+}
+
+.stack__trigger:focus-visible {
+  outline: 2px solid var(--wisteria);
+  outline-offset: -6px;
+  border-radius: var(--radius-card);
+}
+
+.stack__caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 24px 22px;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 25px;
+  /* A horizontal caption clips inside a 112px sliver, so collapsed cards
+     set the label on its side, reading bottom-to-top. */
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.stack__card[data-expanded='true'] .stack__caption {
+  writing-mode: horizontal-tb;
+  transform: none;
+}
+
+.stack--photos .stack__caption {
+  color: var(--photo-caption-ink);
+  text-shadow: var(--photo-caption-shadow);
+}
+
+.stack--text .stack__caption {
+  color: var(--ink);
+}
+
+/* ── Photo cards ─────────────────────────────────────────────────── */
+/* The media wrapper keeps a fixed width while collapsed so a sliver shows
+   the photo's left edge rather than a squeezed image. */
+
+.stack__media {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(620px, 62vw);
+  transition: width var(--dur-card) var(--ease-card);
+}
+
+.stack__card[data-expanded='true'] .stack__media {
+  width: 100%;
+}
+
+.stack__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder shown until real photographs are dropped in. */
+.stack__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      var(--card-frame) 0 18px,
+      transparent 18px 36px
+    ),
+    var(--toggle-shell);
+  border: 1px dashed var(--hairline);
+}
+
+.stack__placeholder span {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.stack__card[data-expanded='true'] .stack__placeholder span {
+  writing-mode: horizontal-tb;
+  transform: none;
+}
+
+/* ── Text cards ──────────────────────────────────────────────────── */
+
+.stack__panel {
+  position: absolute;
+  inset: 0;
+  padding: clamp(30px, 3.2vw, 54px) clamp(30px, 3.2vw, 54px) 96px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--dur-panel) ease;
+}
+
+.stack__card[data-expanded='true'] .stack__panel {
+  opacity: 1;
+}
+
+.stack__panel p {
+  margin: 0 0 18px;
+  max-width: 58ch;
+  font-size: 17px;
+  line-height: 1.78;
+  color: var(--ink-soft);
+}
+
+.stack__panel p:last-child {
+  margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   About + playlist
+   ═══════════════════════════════════════════════════════════════════ */
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+  max-width: 1280px;
+}
+
+.about__text {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.about__text p {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.about__playlist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.about__playlist iframe {
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-embed);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Writing
+   ═══════════════════════════════════════════════════════════════════ */
+
+.writing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 900px;
+}
+
+.writing .kicker {
+  padding-bottom: 8px;
+}
+
+.writing__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 4px;
+  border-top: 1px solid var(--hairline);
+  color: var(--ink);
+}
+
+.writing__row:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+a.writing__row:hover,
+a.writing__row:hover .writing__title {
+  color: var(--float-2);
+}
+
+.writing__title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 32px);
+  transition: color 220ms ease;
+}
+
+.writing__year {
+  flex-shrink: 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Contact
+   ═══════════════════════════════════════════════════════════════════ */
+
+.contact {
+  padding: clamp(40px, 8vh, 90px) var(--page-x) clamp(80px, 14vh, 160px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 760px;
+}
+
+.contact__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(34px, 5vw, 62px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+
+.contact__actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+.contact__cta {
+  background: var(--wisteria);
+  color: var(--cta-ink);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
+  padding: 15px 30px;
+  transition: background 220ms ease;
+}
+
+.contact__cta:hover {
+  background: var(--float-2);
+  color: var(--cta-ink);
+}
+
+.contact__note {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+
+.contact__resume {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 2px;
+}
+
+.contact__resume:hover {
+  color: var(--float-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Mobile — 900px breakpoint
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  /* ── Hero: labels stop being absolutely positioned and become a
+     scattered column instead. ─────────────────────────────────────── */
+  .hero__name {
+    font-size: clamp(44px, 15vw, 96px);
+  }
+
+  .hero__floats {
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .hero__float {
+    position: static;
+    font-size: clamp(20px, 6.5vw, 30px);
+    white-space: normal;
+  }
+
+  .hero__float--1 {
+    margin-left: 0;
+    animation-name: driftA-sm;
+  }
+
+  .hero__float--2 {
+    margin-left: 18%;
+    animation-name: driftB-sm;
+  }
+
+  .hero__float--3 {
+    margin-left: 8%;
+    animation-name: driftC-sm;
+  }
+
+  /* ── Card stack becomes a vertical accordion. Same mechanic, rotated:
+     flex-grow now drives height. The row keeps a definite height so there
+     is free space for flex-grow to distribute, and the ratio drops from
+     26:1 to 6:1 — 26:1 vertically would make a collapsed row a hairline. ── */
+  .stack {
+    flex-direction: column;
+    /* three collapsed rows + gaps + the expanded card */
+    height: calc(62dvh + (3 * 88px) + (3 * var(--card-gap)));
+  }
+
+  .stack__card {
+    min-width: 0;
+    min-height: 88px;
+  }
+
+  .stack__card[data-expanded='true'] {
+    flex-grow: 6;
+  }
+
+  /* A collapsed row is wide, not narrow, so the caption goes back upright. */
+  .stack__caption,
+  .stack__card[data-expanded='true'] .stack__caption {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .stack__placeholder span,
+  .stack__card[data-expanded='true'] .stack__placeholder span {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  /* The media wrapper is full-width in both states now — a short, wide row
+     has no left edge to preserve. */
+  .stack__media,
+  .stack__card[data-expanded='true'] .stack__media {
+    width: 100%;
+  }
+
+  .stack__panel {
+    padding-bottom: 78px;
+  }
+
+  /* ── About collapses to one column, playlist below the text. ────── */
+  .about {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* ── Toggle buttons clear the 44px tap-target minimum. ──────────── */
+  .toggle__btn {
+    min-height: 44px;
+  }
+}
+
+/* Halved translate distances so the drift reads the same at phone scale. */
+@keyframes driftA-sm {
+  from { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
+  to   { transform: translate3d(7px, -11px, 0) rotate(1deg); }
+}
+
+@keyframes driftB-sm {
+  from { transform: translate3d(0, 0, 0) rotate(1deg); }
+  to   { transform: translate3d(-10px, 8px, 0) rotate(-1.5deg); }
+}
+
+@keyframes driftC-sm {
+  from { transform: translate3d(0, 0, 0) rotate(-0.5deg); }
+  to   { transform: translate3d(9px, 9px, 0) rotate(2deg); }
+}
+
+@media (max-width: 620px) {
+  .writing__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Reduced motion
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__float {
+    animation: none;
+  }
+
+  .stack__card,
+  .stack__media {
+    transition-duration: 200ms;
+  }
+
+  .stack__panel {
+    transition-duration: 200ms;
+  }
+}
