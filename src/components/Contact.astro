@@ -1,19 +1,51 @@
 ---
+import fs from 'node:fs';
 import { contact, site } from '../content';
+
+/* Everything except the "say hello" button is mode-dependent. Both variants
+   render; CSS shows the one matching the theme. */
+const modes = [
+  { copy: contact.day, cls: 'day-only', inline: 'day-only-inline' },
+  { copy: contact.night, cls: 'night-only', inline: 'night-only-inline' },
+] as const;
+
+/* Only link a résumé that actually exists in public/ — better a missing link
+   than a 404. Drop the PDF in and it appears on the next build. */
+const hasFile = (href: string) =>
+  fs.existsSync(new URL(`../../public${href}`, import.meta.url));
+
+for (const { copy } of modes) {
+  if (!hasFile(copy.resume.href)) {
+    console.warn(`[contact] public${copy.resume.href} is missing — hiding that résumé link.`);
+  }
+}
 ---
 
 <section class="contact">
-  <div class="kicker day-only">{contact.day.kicker}</div>
-  <div class="kicker night-only">{contact.night.kicker}</div>
-
-  <h2 class="contact__heading">{contact.heading}</h2>
+  {modes.map(({ copy, cls }) => <div class={`kicker ${cls}`}>{copy.kicker}</div>)}
+  {modes.map(({ copy, cls }) => <h2 class={`contact__heading ${cls}`}>{copy.heading}</h2>)}
 
   <div class="contact__actions">
     <a class="contact__cta" href={`mailto:${site.email}`}>{contact.cta}</a>
-    <span class="contact__note day-only">{contact.day.note}</span>
-    <span class="contact__note night-only">{contact.night.note}</span>
-    <a class="contact__resume" href={contact.resume.href} target="_blank" rel="noopener noreferrer">
-      {contact.resume.label} ↗
-    </a>
+
+    {
+      modes.map(({ copy, inline }) => (
+        <span class={`contact__aside ${inline}`}>
+          <span class="contact__note">{copy.note}</span>
+          {
+            hasFile(copy.resume.href) && (
+              <a
+                class="contact__resume"
+                href={copy.resume.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.resume.label} ↗
+              </a>
+            )
+          }
+        </span>
+      ))
+    }
   </div>
 </section>

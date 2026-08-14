@@ -86,7 +86,7 @@ a:hover {
 /* ── Shared bits ─────────────────────────────────────────────────── */
 
 .kicker {
-  font-size: 12px;
+  font-size: var(--fs-kicker);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -111,7 +111,7 @@ a:hover {
 .header__brand {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 17px;
+  font-size: var(--fs-brand);
   color: var(--ink-soft);
 }
 
@@ -131,7 +131,7 @@ a:hover {
   border-radius: var(--radius-pill);
   padding: 8px 18px;
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: var(--fs-kicker);
   letter-spacing: 0.12em;
 }
 
@@ -297,7 +297,7 @@ a:hover {
   pointer-events: none;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 25px;
+  font-size: var(--fs-caption);
   /* A horizontal caption clips inside a 112px sliver, so collapsed cards
      set the label on its side, reading bottom-to-top. */
   writing-mode: vertical-rl;
@@ -360,7 +360,7 @@ a:hover {
 }
 
 .stack__placeholder span {
-  font-size: 11px;
+  font-size: var(--fs-micro);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -391,7 +391,7 @@ a:hover {
 .stack__panel p {
   margin: 0 0 18px;
   max-width: 58ch;
-  font-size: 17px;
+  font-size: var(--fs-body);
   line-height: 1.78;
   color: var(--ink-soft);
 }
@@ -421,7 +421,7 @@ a:hover {
 .about__text p {
   margin: 0;
   max-width: 60ch;
-  font-size: 17px;
+  font-size: var(--fs-body);
   line-height: 1.8;
   color: var(--ink-soft);
   text-wrap: pretty;
@@ -481,7 +481,7 @@ a.writing__row:hover .writing__title {
 
 .writing__year {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: var(--fs-kicker);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -523,7 +523,7 @@ a.writing__row:hover .writing__title {
   color: var(--cta-ink);
   font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--fs-cta);
   letter-spacing: 0.04em;
   border-radius: var(--radius-pill);
   padding: 15px 30px;
@@ -535,15 +535,23 @@ a.writing__row:hover .writing__title {
   color: var(--cta-ink);
 }
 
+/* Note and résumé sit on one line beside the button. `display` comes from the
+   day-only-inline / night-only-inline classes so the mode switch still works. */
+.contact__aside {
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
 .contact__note {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 18px;
+  font-size: var(--fs-note);
   color: var(--ink-soft);
 }
 
 .contact__resume {
-  font-size: 13px;
+  font-size: var(--fs-kicker);
   letter-spacing: 0.06em;
   color: var(--ink-faint);
   border-bottom: 1px solid var(--hairline);

@@ -14,12 +14,10 @@
     } catch (e) {
       /* private mode / storage disabled — fall through to the media query */
     }
-    var theme =
-      stored === 'light' || stored === 'dark'
-        ? stored
-        : window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light';
+    // First visit always opens in 5–9. The OS colour-scheme preference is
+    // deliberately not consulted: the toggle picks a persona, not a skin, so
+    // a dark-mode machine shouldn't land on the work side.
+    var theme = stored === 'light' || stored === 'dark' ? stored : 'light';
     document.documentElement.dataset.theme = theme;
   })();
 </script>

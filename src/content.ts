@@ -105,20 +105,23 @@ export const writing = {
 } as const;
 
 /**
- * The design specifies one shared contact section, but its kicker and note are
- * yoga-specific and read wrong in 9–5, so those two strings follow the mode the
- * same way the hero labels do. Everything else here is shared.
+ * The design specifies one shared contact section, but its wording is
+ * yoga-specific and reads wrong in 9–5, so the kicker, heading, note and
+ * résumé all follow the mode the same way the hero labels do. Only the "say
+ * hello" button is shared.
  */
 export const contact = {
-  heading: 'open to opportunities',
   cta: 'say hello',
-  resume: { label: 'résumé', href: '/yoga-resume.pdf' },
   day: {
     kicker: 'Practice with me',
+    heading: 'open to opportunities',
     note: 'studio classes, pop-ups, and private sessions',
+    resume: { label: 'résumé', href: '/yoga-resume.pdf' },
   },
   night: {
     kicker: 'Get in touch',
-    note: 'product work, writing, and anything at the intersection of the two',
+    heading: "let's work together",
+    note: 'product, wellness, and anything in between',
+    resume: { label: 'résumé', href: '/corporate-resume.pdf' },
   },
 } as const;

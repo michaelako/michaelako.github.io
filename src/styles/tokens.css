@@ -65,6 +65,16 @@
   /* ── Type ───────────────────────────────────────────────────────── */
   --font-display: 'Newsreader', Georgia, serif;
   --font-ui: 'Karla', system-ui, sans-serif;
+
+  /* Nudged up from the handoff's values, which ran small at real reading
+     distance. The display sizes (h1, h2, writing titles) are unchanged. */
+  --fs-body: 18px; /* was 17 — card and about copy */
+  --fs-caption: 28px; /* was 25 — card titles */
+  --fs-note: 19px; /* was 18 — contact aside */
+  --fs-brand: 18px; /* was 17 — "mk" */
+  --fs-kicker: 13px; /* was 12 — section labels, years, toggle */
+  --fs-cta: 15px; /* was 14 — say hello */
+  --fs-micro: 12px; /* was 11 — placeholder label */
 }
 
 html[data-theme='dark'] {
