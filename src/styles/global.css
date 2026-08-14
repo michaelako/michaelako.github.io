@@ -12,6 +12,9 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Lets the mobile text cards animate to their content height. Where it is
+     unsupported the card snaps open instead — same layout, no transition. */
+  interpolate-size: allow-keywords;
 }
 
 body {
@@ -592,22 +595,44 @@ a.writing__row:hover .writing__title {
   }
 
   /* ── Card stack becomes a vertical accordion. Same mechanic, rotated:
-     flex-grow now drives height. The row keeps a definite height so there
-     is free space for flex-grow to distribute, and the ratio drops from
-     26:1 to 6:1 — 26:1 vertically would make a collapsed row a hairline. ── */
+     height now carries the expansion instead of width. Rows are sized
+     directly rather than by flex-grow, because the text cards have to be
+     allowed to size to their own copy — see below. ─────────────────── */
   .stack {
     flex-direction: column;
-    /* three collapsed rows + gaps + the expanded card */
-    height: calc(62dvh + (3 * 88px) + (3 * var(--card-gap)));
+    height: auto;
   }
 
   .stack__card {
     min-width: 0;
-    min-height: 88px;
+    flex: 0 0 auto;
+    height: 88px;
+    transition:
+      height var(--dur-card) var(--ease-card),
+      filter var(--dur-card) ease;
   }
 
-  .stack__card[data-expanded='true'] {
-    flex-grow: 6;
+  .stack--photos .stack__card[data-expanded='true'] {
+    flex: 0 0 auto;
+    height: 62dvh;
+  }
+
+  /* Text cards grow to fit their copy. At phone width a panel needs far more
+     than 62dvh — the longest one runs past 730px against 423px of usable box
+     — and the panel is overflow:hidden, so a fixed height silently eats the
+     end of the text. 62dvh becomes the floor it can't go under, which is what
+     the handoff's "min-height" asks for. */
+  .stack--text .stack__card[data-expanded='true'] {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 62dvh;
+  }
+
+  /* Taking the panel out of absolute positioning is what lets the card
+     measure its own content. Its 78px bottom padding still clears the
+     caption, which stays anchored to the card. */
+  .stack--text .stack__card[data-expanded='true'] .stack__panel {
+    position: static;
   }
 
   /* A collapsed row is wide, not narrow, so the caption goes back upright. */

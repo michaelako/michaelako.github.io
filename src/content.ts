@@ -54,7 +54,7 @@ export const work = [
     paragraphs: [
       "I'm a product manager at Bandwidth, working on a product suite made for developers, by developers.",
       "I led Bandwidth's first self-serve consumer platform from a prototype into a real, revenue-generating product line, owning strategy end-to-end from beta through general availability. Within ten weeks of launch, we'd acquired 350 users organically, with zero marketing spend, and an 8% trial-to-paid conversion rate that validated a customer segment the company had never been able to serve before.",
-      "My product /"Big Three/" is transparency, confidence, and iteration, and my workday must-haves are my notebook, post-its, and espresso.",
+      'My product “Big Three” is transparency, confidence, and iteration, and my workday must-haves are my notebook, post-its, and espresso.',
     ],
   },
   {
@@ -62,7 +62,7 @@ export const work = [
     paragraphs: [
       'The engineering came sideways. I picked up a few computer science classes sophomore year to better understand statistical analysis and data visualization for my research. The side quest turned into a degree and an early career.',
       'I spent 2021 to 2025 as a software engineer at Bandwidth on voice routing, the layer that decides how a call actually gets where it is going. Working on core network infrastructure was unglamorous, difficult, and an incredible learning experience.',
-      'The iterative nature of software engineering showed me that every problem has a solution and informs my product management and leadership style today.'.
+      'The iterative nature of software engineering showed me that every problem has a solution and informs my product management and leadership style today.',
     ],
   },
   {

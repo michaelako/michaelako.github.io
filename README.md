@@ -36,8 +36,12 @@ npm run dev
 - **`public/photos/`** — drop the four 5–9 photographs here (see the README there).
 - **`archive/`** — the previous single-file version of the site, kept for reference.
 
-## Deploy
+## CI and deploy
 
-Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds with
-`withastro/action` and publishes via `actions/deploy-pages`. The repo's Pages
-source must be set to **GitHub Actions** (not a branch).
+| workflow | when | what |
+| --- | --- | --- |
+| `.github/workflows/ci.yml` | push to any branch except `main` | `npm ci` → `npm run check` → `npm run build`, and uploads `dist/` as an artifact |
+| `.github/workflows/deploy.yml` | push to `main` | builds with `withastro/action` and publishes via `actions/deploy-pages` |
+
+The repo's Pages source must be set to **GitHub Actions** (not a branch) for
+the deploy to publish.
