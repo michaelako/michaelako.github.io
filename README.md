@@ -33,7 +33,11 @@ npm run dev
 - **`src/components/CardStack.astro`** — the expanding card row, used once per mode.
 - **`src/components/CloudCanvas.astro`** — the drifting background. Intentionally
   has no mouse interaction.
-- **`public/photos/`** — drop the four 5–9 photographs here (see the README there).
+- **`src/assets/photos/`** — the four 5–9 photographs. They live here rather than
+  in `public/` so Astro runs them through sharp at build time and emits sized
+  WebP. To swap one, replace the file and keep the name. Supply ~2400px wide at
+  4:3, subject slightly left of centre — a collapsed card shows only the left
+  edge of the frame.
 - **`archive/`** — the previous single-file version of the site, kept for reference.
 
 ## CI and deploy

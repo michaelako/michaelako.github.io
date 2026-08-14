@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 /**
  * The signature interaction: one row of cards where exactly one is expanded
  * and the rest are 112px slivers. Expansion is a flex-grow transition, so
@@ -11,7 +13,7 @@
 
 interface PhotoCard {
   caption: string;
-  src: string | null;
+  src: ImageMetadata | null;
   alt: string;
 }
 
@@ -38,7 +40,18 @@ const isPhoto = (_card: PhotoCard | TextCard): _card is PhotoCard => variant ===
         {isPhoto(card) ? (
           <div class="stack__media">
             {card.src ? (
-              <img src={card.src} alt={card.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+              /* The same file is rendered at ~330px (phone) up to ~1400px
+                 (expanded on a wide desktop), so hand the browser a srcset
+                 and let it pick rather than shipping the largest everywhere. */
+              <Image
+                src={card.src}
+                alt={card.alt}
+                widths={[640, 1024, 1600, 2400]}
+                sizes="(max-width: 900px) 100vw, (max-width: 1440px) 920px, 1400px"
+                format="webp"
+                quality={62}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
             ) : (
               <div class="stack__placeholder">
                 <span>photo slot</span>

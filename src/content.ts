@@ -17,16 +17,37 @@ export const hero = {
   night: ['product manager', 'Raleigh, NC', 'ex-SWE'],
 } as const;
 
+import community from './assets/photos/community.jpg';
+import studio from './assets/photos/studio.jpg';
+import privates from './assets/photos/privates.jpg';
+import groups from './assets/photos/groups.jpg';
+
 /**
- * 5–9 photo stack. `src` is null while a slot is still a placeholder — drop a
- * file into public/photos/ and set the path here to fill it. Portrait crops
- * work best: a collapsed sliver shows the image's left edge.
+ * 5–9 photo stack. Sources live in src/assets/photos/ (not public/) so Astro
+ * runs them through sharp at build time and emits sized WebP. Set `src` to
+ * null to fall back to a placeholder frame.
  */
 export const photos = [
-  { caption: 'community', src: null, alt: '' },
-  { caption: 'studio', src: null, alt: '' },
-  { caption: 'privates', src: null, alt: '' },
-  { caption: 'groups', src: null, alt: '' },
+  {
+    caption: 'community',
+    src: community,
+    alt: 'Michaela teaching a free outdoor yoga class in a park at sunset',
+  },
+  {
+    caption: 'studio',
+    src: studio,
+    alt: 'A studio inversion workshop, students in headstands and arm balances',
+  },
+  {
+    caption: 'privates',
+    src: privates,
+    alt: 'Michaela in a warrior asana on a deck overlooking a lake at sunrise',
+  },
+  {
+    caption: 'groups',
+    src: groups,
+    alt: 'Michaela leading a poolside yoga session for a bachelorette party',
+  },
 ] as const;
 
 export const about = {
