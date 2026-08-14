@@ -52,15 +52,17 @@ export const work = [
   {
     caption: 'Product',
     paragraphs: [
-      "I'm a product manager at Bandwidth, working on a product suite made for developers, by developers. Developer experience is the whole job: the people I build for are the people who read the docs, hit the errors, and tell me exactly where the seams are.",
-      "I'm especially interested in work that sits at the intersection of human behavior and technology — which is, more or less, the thread running through everything else on this page.",
+      "I'm a product manager at Bandwidth, working on a product suite made for developers, by developers.",
+      "I led Bandwidth's first self-serve consumer platform from a prototype into a real, revenue-generating product line, owning strategy end-to-end from beta through general availability. Within ten weeks of launch, we'd acquired 350 users organically, with zero marketing spend, and an 8% trial-to-paid conversion rate that validated a customer segment the company had never been able to serve before.",
+      "My product /"Big Three/" is transparency, confidence, and iteration, and my workday must-haves are my notebook, post-its, and espresso.",
     ],
   },
   {
     caption: 'SWE',
     paragraphs: [
-      'I spent 2021 to 2025 as a software engineer at Bandwidth on voice routing, the layer that decides how a call actually gets where it is going. It is unglamorous, deeply consequential infrastructure, and it taught me more about tradeoffs than any book has.',
       'The engineering came sideways. I picked up a few computer science classes sophomore year to better understand statistical analysis and data visualization for my research. The side quest turned into a degree and an early career.',
+      'I spent 2021 to 2025 as a software engineer at Bandwidth on voice routing, the layer that decides how a call actually gets where it is going. Working on core network infrastructure was unglamorous, difficult, and an incredible learning experience.',
+      'The iterative nature of software engineering showed me that every problem has a solution and informs my product management and leadership style today.'.
     ],
   },
   {
@@ -73,8 +75,8 @@ export const work = [
   {
     caption: 'Education',
     paragraphs: [
-      'B.S. in Psychology and Computer Science from Duke University, 2022. The two halves were never really separate — the psychology asked the questions and the computer science gave me the tools to answer them at scale.',
-      'At Duke I also studied Kundalini yoga under Dr. Keval Kaur Khalsa. Years later, in 2026, I earned my RYT-200 certification through Dose Yoga.',
+      'B.S. in Psychology and Computer Science from Duke University, 2022. I joined DTech, a Duke group for women in technology, and am an alumni mentor and coach for DTech Build, helping college-aged women build their first full-stack applications.',
+      'Movement was always my throughline. My favorite class was Jazz with Nina Wheeler. I also studied yoga under Dr. Keval Kaur Khalsa and worked on the Embodied Learning Summit for the History of Yoga in 2021. Years later, in 2026, I earned my RYT-200 certification through Dose Yoga.',
     ],
   },
 ] as const;
