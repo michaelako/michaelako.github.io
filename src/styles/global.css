@@ -566,12 +566,25 @@ a.writing__row:hover .writing__title {
   color: var(--ink-soft);
 }
 
+/* The rule was a 19px-tall tap target — too small for a thumb. Vertical padding
+   takes it to 44px, and the underline moves from border-bottom to
+   text-decoration so it keeps hugging the text instead of sinking to the bottom
+   of the padded box. The aside aligns on the baseline, so the visible text does
+   not move; only the hit area grows. */
 .contact__resume {
+  display: inline-block;
+  padding: 14px 0;
   font-size: var(--fs-kicker);
   letter-spacing: 0.06em;
   color: var(--ink-faint);
-  border-bottom: 1px solid var(--hairline);
-  padding-bottom: 2px;
+  text-decoration: underline;
+  text-decoration-color: var(--hairline);
+  text-underline-offset: 4px;
+}
+
+.contact__resume:hover {
+  color: var(--float-2);
+  text-decoration-color: currentColor;
 }
 
 .contact__resume:hover {
