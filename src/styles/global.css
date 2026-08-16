@@ -20,7 +20,7 @@ html {
 body {
   margin: 0;
   background: var(--page-bg);
-  font-family: var(--font-ui);
+  font-family: var(--font-main);
   color: var(--ink);
 }
 
@@ -85,11 +85,16 @@ a:hover {
 
 /* ── Shared bits ─────────────────────────────────────────────────── */
 
+/* Section labels. Family, style, size, casing and tracking all come from the
+   accent tokens, which the theme swaps — see tokens.css. */
 .kicker {
-  font-size: var(--fs-kicker);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
+  font-family: var(--font-accent);
+  font-style: var(--accent-style);
+  font-size: var(--fs-kicker-accent);
+  letter-spacing: var(--kicker-tracking);
+  text-transform: var(--kicker-transform);
+  line-height: 1.1;
+  color: var(--ink-soft);
 }
 
 .section {
@@ -109,7 +114,7 @@ a:hover {
 }
 
 .header__brand {
-  font-family: var(--font-display);
+  font-family: var(--font-main);
   font-style: italic;
   font-size: var(--fs-brand);
   color: var(--ink-soft);
@@ -130,7 +135,7 @@ a:hover {
   border: 0;
   border-radius: var(--radius-pill);
   padding: 8px 18px;
-  font-family: var(--font-ui);
+  font-family: var(--font-main);
   font-size: var(--fs-kicker);
   letter-spacing: 0.12em;
 }
@@ -156,13 +161,13 @@ a:hover {
 
 .hero__name {
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(58px, 12.5vw, 210px);
-  line-height: 0.88;
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: clamp(40px, 8.4vw, 140px);
+  line-height: 0.86;
   letter-spacing: -0.045em;
   max-width: 12ch;
-  text-transform: lowercase;
+  text-transform: uppercase;
   color: var(--ink);
 }
 
@@ -174,10 +179,10 @@ a:hover {
 
 .hero__float {
   position: absolute;
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-accent);
+  font-style: var(--accent-style);
   font-weight: 400;
-  font-size: clamp(24px, 3.2vw, 42px);
+  font-size: var(--fs-float);
   white-space: nowrap;
 }
 
@@ -277,6 +282,10 @@ a:hover {
   background: transparent;
   cursor: pointer;
   text-align: left;
+  /* Buttons take the UA font rather than inheriting, which would drop any text
+     added here into Arial. Today the caption span sets its own, so this is
+     belt-and-braces — but it keeps the three-family rule true by construction. */
+  font: inherit;
 }
 
 .stack__card[data-expanded='true'] .stack__trigger {
@@ -295,8 +304,8 @@ a:hover {
   bottom: 0;
   padding: 24px 22px;
   pointer-events: none;
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-accent);
+  font-style: var(--accent-style);
   font-size: var(--fs-caption);
   /* A horizontal caption clips inside a 112px sliver, so collapsed cards
      set the label on its side, reading bottom-to-top. */
@@ -390,7 +399,7 @@ a:hover {
 
 .stack__panel p {
   margin: 0 0 18px;
-  max-width: 58ch;
+  max-width: 56ch;
   font-size: var(--fs-body);
   line-height: 1.78;
   color: var(--ink-soft);
@@ -420,7 +429,9 @@ a:hover {
 
 .about__text p {
   margin: 0;
-  max-width: 60ch;
+  /* Montserrat sets wider than Karla, so the ch-measure comes down to hold a
+     comparable line length — long-form copy is this family's weak spot. */
+  max-width: 56ch;
   font-size: var(--fs-body);
   line-height: 1.8;
   color: var(--ink-soft);
@@ -474,13 +485,18 @@ a.writing__row:hover .writing__title {
 }
 
 .writing__title {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 2.6vw, 32px);
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: clamp(20px, 2.3vw, 28px);
   transition: color 220ms ease;
 }
 
+/* The writing list is 9–5 only, so --font-accent here is always the mono —
+   which is what you want for a column of years anyway. */
 .writing__year {
   flex-shrink: 0;
+  font-family: var(--font-accent);
+  font-style: var(--accent-style);
   font-size: var(--fs-kicker);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -501,8 +517,8 @@ a.writing__row:hover .writing__title {
 
 .contact__heading {
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: var(--font-main);
+  font-weight: 800;
   font-size: clamp(34px, 5vw, 62px);
   line-height: 1.06;
   letter-spacing: -0.03em;
@@ -521,7 +537,7 @@ a.writing__row:hover .writing__title {
 .contact__cta {
   background: var(--wisteria);
   color: var(--cta-ink);
-  font-family: var(--font-ui);
+  font-family: var(--font-main);
   font-weight: 700;
   font-size: var(--fs-cta);
   letter-spacing: 0.04em;
@@ -544,8 +560,8 @@ a.writing__row:hover .writing__title {
 }
 
 .contact__note {
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-accent);
+  font-style: var(--accent-style);
   font-size: var(--fs-note);
   color: var(--ink-soft);
 }

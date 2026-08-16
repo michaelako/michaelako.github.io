@@ -63,16 +63,32 @@
   --dur-panel: 460ms;
 
   /* ── Type ───────────────────────────────────────────────────────── */
-  --font-display: 'Newsreader', Georgia, serif;
-  --font-ui: 'Karla', system-ui, sans-serif;
+  /* Three families site-wide, no more. Montserrat carries headings *and* body
+     copy; --font-accent is the only one that changes between modes. */
+  --font-main: 'Montserrat', system-ui, sans-serif;
+
+  /* ── Accent type ──────────────────────────────────────────────────
+     The hero sub-headings and section labels take a different voice per mode:
+     5–9 is italic Playfair, 9–5 is Droid Sans Mono. Montserrat headings are
+     shared. Everything that has to move with the family — style, size, casing,
+     tracking — is a token, so the rules in global.css stay mode-agnostic and
+     the dark block below is the only place the 9–5 voice is described. */
+  --font-accent: 'Playfair Display', Georgia, serif;
+  --accent-style: italic;
+  --fs-float: clamp(26px, 3.4vw, 46px);
+  --fs-kicker-accent: 25px;
+  --kicker-transform: lowercase;
+  --kicker-tracking: 0;
 
   /* Nudged up from the handoff's values, which ran small at real reading
-     distance. The display sizes (h1, h2, writing titles) are unchanged. */
-  --fs-body: 18px; /* was 17 — card and about copy */
+     distance, then retuned for Montserrat. */
+  /* 17 rather than the 18 this was under Karla: Montserrat has a noticeably
+     larger x-height, so it reads a size bigger at the same point size. */
+  --fs-body: 17px;
   --fs-caption: 28px; /* was 25 — card titles */
   --fs-note: 19px; /* was 18 — contact aside */
   --fs-brand: 18px; /* was 17 — "mk" */
-  --fs-kicker: 13px; /* was 12 — section labels, years, toggle */
+  --fs-kicker: 13px; /* was 12 — years, toggle */
   --fs-cta: 15px; /* was 14 — say hello */
   --fs-micro: 12px; /* was 11 — placeholder label */
 }
@@ -107,4 +123,21 @@ html[data-theme='dark'] {
   --night-display: block;
   --day-flex: none;
   --night-flex: flex;
+
+  /* The 9–5 accent voice. Mono has a far larger x-height than italic Playfair,
+     so it needs much less point size to read at the same optical size. */
+  --font-accent: 'Droid Sans Mono', ui-monospace, SFMono-Regular, monospace;
+  --accent-style: normal;
+  --fs-float: clamp(18px, 2.3vw, 30px);
+  --fs-kicker-accent: 14px;
+  /* The 9–5 copy is authored MACRO_CASE in content.ts, so nothing to transform
+     here. Tracking comes down from 0.16em because the underscores already do
+     the word-separating that letter-spacing was doing. */
+  --kicker-transform: none;
+  --kicker-tracking: 0.1em;
+
+  /* Card captions and the contact aside are accent-set too, so they take the
+     same x-height correction as the labels above. */
+  --fs-caption: 21px;
+  --fs-note: 16px;
 }

@@ -49,3 +49,8 @@ npm run dev
 
 The repo's Pages source must be set to **GitHub Actions** (not a branch) for
 the deploy to publish.
+
+The site is served from **michaelako.com**. `public/CNAME` carries the domain
+into every build so the custom domain survives each deploy; `michaelako.github.io`
+redirects there. Apex DNS points at GitHub's four Pages A/AAAA records, and
+`www` is a CNAME to `michaelako.github.io`.

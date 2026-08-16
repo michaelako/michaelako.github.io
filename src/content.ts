@@ -12,9 +12,14 @@ export const site = {
 
 export const hero = {
   name: 'michaela kotarba',
-  /** Three free-floating italic labels; index maps to --float-1/2/3. */
+  /**
+   * Three free-floating labels; index maps to --float-1/2/3. 9–5 is set in
+   * mono, so its labels are written MACRO_CASE here rather than uppercased in
+   * CSS — text-transform cannot turn a space into an underscore. Index 1 is
+   * Raleigh in both modes, so the two sides stay in visual parallel.
+   */
   day: ['yoga instructor', 'Raleigh, NC', 'studio fitness'],
-  night: ['product manager', 'Raleigh, NC', 'ex-SWE'],
+  night: ['PRODUCT_MANAGER', 'RALEIGH_NC', 'EX_SWE'],
 } as const;
 
 import community from './assets/photos/community.jpg';
@@ -71,7 +76,7 @@ export const playlist = {
  */
 export const work = [
   {
-    caption: 'Product',
+    caption: 'PRODUCT_MANAGEMENT',
     paragraphs: [
       "I'm a product manager at Bandwidth, working on a product suite made for developers, by developers.",
       "I led Bandwidth's first self-serve consumer platform from a prototype into a real, revenue-generating product line, owning strategy end-to-end from beta through general availability. Within ten weeks of launch, we'd acquired 350 users organically, with zero marketing spend, and an 8% trial-to-paid conversion rate that validated a customer segment the company had never been able to serve before.",
@@ -79,7 +84,7 @@ export const work = [
     ],
   },
   {
-    caption: 'SWE',
+    caption: 'SOFTWARE_ENGINEERING',
     paragraphs: [
       'The engineering came sideways. I picked up a few computer science classes sophomore year to better understand statistical analysis and data visualization for my research. The side quest turned into a degree and an early career.',
       'I spent 2021 to 2025 as a software engineer at Bandwidth on voice routing, the layer that decides how a call actually gets where it is going. Working on core network infrastructure was unglamorous, difficult, and an incredible learning experience.',
@@ -87,14 +92,14 @@ export const work = [
     ],
   },
   {
-    caption: 'Research',
+    caption: 'RESEARCH',
     paragraphs: [
       'My four years at Duke were mostly behavioral health research. I was an undergraduate researcher from 2019 to 2021 and a data science intern in the summer of 2020, working where mental health and technology meet.',
       'I led a nationwide survey on adolescent motivations and risk perception around COVID-19 vaccination, co-authored a systematic review of healthcare providers’ vaccine hesitancy, and studied the impact of yoga on adolescent mental health. Both papers are in the writing list below.',
     ],
   },
   {
-    caption: 'Education',
+    caption: 'EDUCATION',
     paragraphs: [
       'B.S. in Psychology and Computer Science from Duke University, 2022. I joined DTech, a Duke group for women in technology, and am an alumni mentor and coach for DTech Build, helping college-aged women build their first full-stack applications.',
       'Movement was always my throughline. My favorite class was Jazz with Nina Wheeler. I also studied yoga under Dr. Keval Kaur Khalsa and worked on the Embodied Learning Summit for the History of Yoga in 2021. Years later, in 2026, I earned my RYT-200 certification through Dose Yoga.',
@@ -102,8 +107,18 @@ export const work = [
   },
 ] as const;
 
+interface WritingItem {
+  title: string;
+  year: string;
+  /** null renders the row as plain text rather than a link. */
+  href: string | null;
+}
+
 export const writing = {
-  kicker: 'Writing',
+  kicker: 'WRITING',
+  /* Annotated rather than inferred: with `as const` alone, every entry having
+     a link would narrow href to string and make Writing.astro's no-link branch
+     unreachable — so a later entry with href: null would render a dead <a>. */
   items: [
     {
       title: "Developer Experience isn't just for developers anymore",
@@ -120,9 +135,9 @@ export const writing = {
       title:
         'Healthcare Providers’ Vaccine Perceptions, Hesitancy, and Recommendation to Patients',
       year: '2021',
-      href: null,
+      href: 'https://pubmed.ncbi.nlm.nih.gov/34358132/',
     },
-  ],
+  ] as readonly WritingItem[],
 } as const;
 
 /**
@@ -140,7 +155,7 @@ export const contact = {
     resume: { label: 'résumé', href: '/yoga-resume.pdf' },
   },
   night: {
-    kicker: 'Get in touch',
+    kicker: 'GET_IN_TOUCH',
     heading: "let's work together",
     note: 'product, wellness, and anything in between',
     resume: { label: 'résumé', href: '/corporate-resume.pdf' },

@@ -1,8 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// michaelako.github.io is a GitHub *user* site, so it is served from the domain
-// root — no `base` path is needed.
+// Served from the root of the custom domain michaelako.com (see public/CNAME),
+// so no `base` path is needed. michaelako.github.io redirects here.
 export default defineConfig({
-  site: 'https://michaelako.github.io',
+  site: 'https://michaelako.com',
 });
