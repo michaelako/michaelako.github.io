@@ -1,0 +1,7 @@
+{
+  "serviceName": "michaelako-sms",
+  "runtime": "node18",
+  "functionsFolder": "functions",
+  "assetsFolder": "assets"
+}
+

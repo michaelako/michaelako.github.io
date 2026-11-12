@@ -23,6 +23,8 @@ jobs:
         uses: actions/checkout@v7
       - name: Build
         uses: withastro/action@v6
+        env:
+          PUBLIC_SMS_OPTIN_ENDPOINT: ${{ vars.PUBLIC_SMS_OPTIN_ENDPOINT }}
 
   deploy:
     needs: build

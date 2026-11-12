@@ -592,6 +592,38 @@ a.writing__row:hover .writing__title {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   Footer
+   ═══════════════════════════════════════════════════════════════════ */
+
+.footer {
+  padding: 0 var(--page-x) 36px;
+}
+
+.footer__links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+  max-width: 760px;
+}
+
+.footer__links a {
+  font-family: var(--font-accent);
+  font-style: var(--accent-style);
+  font-size: var(--fs-note);
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline);
+  text-underline-offset: 4px;
+}
+
+.footer__links a:hover {
+  color: var(--float-2);
+  text-decoration-color: currentColor;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    Mobile — 900px breakpoint
    ═══════════════════════════════════════════════════════════════════ */
 

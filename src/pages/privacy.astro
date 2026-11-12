@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { site, sms } from '../content';
+---
+
+<Base title={`${sms.privacy.title} — ${site.title}`}>
+  <Header />
+
+  <main class="legal section">
+    <h1 class="legal__heading">{sms.privacy.title}</h1>
+    <p class="legal__updated">
+      {sms.ui.lastUpdatedLabel}: {sms.privacy.lastUpdated}
+    </p>
+
+    {sms.privacy.sections.map((s) => (
+      <section class="legal__section">
+        <h2 class="legal__subheading">{s.heading}</h2>
+        {s.paragraphs.map((p) => (
+          <p class="legal__p">{p}</p>
+        ))}
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .legal {
+    max-width: 900px;
+  }
+
+  .legal__heading {
+    margin: 0;
+    font-family: var(--font-main);
+    font-weight: 800;
+    font-size: clamp(34px, 5vw, 62px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .legal__updated {
+    margin: 10px 0 32px;
+    font-family: var(--font-accent);
+    font-style: var(--accent-style);
+    font-size: var(--fs-note);
+    color: var(--ink-faint);
+  }
+
+  .legal__section {
+    padding: 22px 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .legal__subheading {
+    margin: 0 0 10px;
+    font-family: var(--font-main);
+    font-weight: 700;
+    font-size: clamp(18px, 2.2vw, 22px);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .legal__p {
+    margin: 0 0 14px;
+    max-width: 70ch;
+    font-size: var(--fs-body);
+    line-height: 1.8;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .legal__p:last-child {
+    margin-bottom: 0;
+  }
+</style>
+

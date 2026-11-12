@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { site, sms } from '../content';
+
+const renderTermsParagraph = (p: string) => {
+  const privacyLabel = sms.privacy.navLabel;
+  const idx = p.indexOf(privacyLabel);
+  if (idx === -1) return p;
+  return {
+    before: p.slice(0, idx),
+    label: privacyLabel,
+    after: p.slice(idx + privacyLabel.length),
+  };
+};
+
+const renderKeywords = (p: string) => {
+  const helpIdx = p.indexOf(sms.keywords.help);
+  const stopIdx = p.indexOf(sms.keywords.stop);
+  if (helpIdx === -1 && stopIdx === -1) return null;
+
+  if (helpIdx !== -1 && stopIdx !== -1 && helpIdx < stopIdx) {
+    return {
+      beforeHelp: p.slice(0, helpIdx),
+      between: p.slice(helpIdx + sms.keywords.help.length, stopIdx),
+      afterStop: p.slice(stopIdx + sms.keywords.stop.length),
+    };
+  }
+
+  if (helpIdx !== -1) {
+    return { before: p.slice(0, helpIdx), after: p.slice(helpIdx + sms.keywords.help.length) };
+  }
+
+  return { before: p.slice(0, stopIdx), after: p.slice(stopIdx + sms.keywords.stop.length) };
+};
+---
+
+<Base title={`${sms.terms.title} — ${site.title}`}>
+  <Header />
+
+  <main class="legal section">
+    <h1 class="legal__heading">{sms.terms.title}</h1>
+    <p class="legal__updated">
+      {sms.ui.lastUpdatedLabel}: {sms.terms.lastUpdated}
+    </p>
+
+    <section class="legal__section">
+      {sms.terms.paragraphs.map((p) => {
+        const kw = renderKeywords(p);
+        if (kw && 'beforeHelp' in kw) {
+          return (
+            <p class="legal__p">
+              {kw.beforeHelp}
+              <strong>{sms.keywords.help}</strong>
+              {kw.between}
+              <strong>{sms.keywords.stop}</strong>
+              {kw.afterStop}
+            </p>
+          );
+        }
+        if (kw && 'before' in kw) {
+          const keyword = p.includes(sms.keywords.help) ? sms.keywords.help : sms.keywords.stop;
+          return (
+            <p class="legal__p">
+              {kw.before}
+              <strong>{keyword}</strong>
+              {kw.after}
+            </p>
+          );
+        }
+        const maybe = renderTermsParagraph(p);
+        if (typeof maybe === 'string') {
+          return <p class="legal__p">{maybe}</p>;
+        }
+        return (
+          <p class="legal__p">
+            {maybe.before}
+            <a href="/privacy">{maybe.label}</a>
+            {maybe.after}
+          </p>
+        );
+      })}
+    </section>
+  </main>
+</Base>
+
+<style>
+  .legal {
+    max-width: 900px;
+  }
+
+  .legal__heading {
+    margin: 0;
+    font-family: var(--font-main);
+    font-weight: 800;
+    font-size: clamp(34px, 5vw, 62px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .legal__updated {
+    margin: 10px 0 32px;
+    font-family: var(--font-accent);
+    font-style: var(--accent-style);
+    font-size: var(--fs-note);
+    color: var(--ink-faint);
+  }
+
+  .legal__section {
+    padding: 22px 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .legal__p {
+    margin: 0 0 14px;
+    max-width: 70ch;
+    font-size: var(--fs-body);
+    line-height: 1.8;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .legal__p:last-child {
+    margin-bottom: 0;
+  }
+
+  strong {
+    color: var(--ink);
+  }
+</style>
+
