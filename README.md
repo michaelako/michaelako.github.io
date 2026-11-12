@@ -54,3 +54,13 @@ The site is served from **michaelako.com**. `public/CNAME` carries the domain
 into every build so the custom domain survives each deploy; `michaelako.github.io`
 redirects there. Apex DNS points at GitHub's four Pages A/AAAA records, and
 `www` is a CNAME to `michaelako.github.io`.
+
+## SMS opt-in (Twilio Serverless)
+
+The yoga-side SMS opt-in form posts to a public build-time environment variable:
+
+- `PUBLIC_SMS_OPTIN_ENDPOINT`: the deployed URL of the Twilio Serverless `optin` function
+
+For GitHub Pages deploys, set a repository **variable** named `PUBLIC_SMS_OPTIN_ENDPOINT` so `.github/workflows/deploy.yml` can pass it into the build.
+
+The backend functions live in `twilio/`. Deployment + required Twilio env vars are documented in `twilio/README.md`.

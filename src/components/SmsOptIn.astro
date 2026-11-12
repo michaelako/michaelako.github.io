@@ -1,0 +1,321 @@
+---
+import { site, sms } from '../content';
+
+const endpoint = import.meta.env.PUBLIC_SMS_OPTIN_ENDPOINT ?? '';
+
+const disclosure = sms.optIn.disclosureText;
+const privacyLabel = sms.privacy.navLabel;
+const termsLabel = sms.terms.navLabel;
+
+const privacyIdx = disclosure.indexOf(privacyLabel);
+const termsIdx = disclosure.indexOf(termsLabel);
+---
+
+<section class="sms-optin" aria-label={sms.programName}>
+  <div class="kicker">{sms.programName}</div>
+  <h2 class="sms-optin__heading">{sms.optIn.heading}</h2>
+  <p class="sms-optin__note">{sms.optIn.note}</p>
+
+  <form class="sms-optin__form" data-endpoint={endpoint} novalidate>
+    <div class="sms-optin__row">
+      <label class="sms-optin__field">
+        <span class="sms-optin__label">{sms.optIn.fields.nameLabel}</span>
+        <input name="name" autocomplete="name" required />
+      </label>
+
+      <label class="sms-optin__field">
+        <span class="sms-optin__label">{sms.optIn.fields.phoneLabel}</span>
+        <input name="phone" inputmode="tel" autocomplete="tel" required />
+      </label>
+    </div>
+
+    <div class="sms-optin__consent">
+      <input id="sms-consent" name="consent" type="checkbox" required />
+      <label for="sms-consent" class="sms-optin__consent-text">
+        {privacyIdx !== -1 && termsIdx !== -1 && privacyIdx < termsIdx ? (
+          <>
+            {disclosure.slice(0, privacyIdx)}
+            <a href="/privacy">{privacyLabel}</a>
+            {disclosure.slice(privacyIdx + privacyLabel.length, termsIdx)}
+            <a href="/terms">{termsLabel}</a>
+            {disclosure.slice(termsIdx + termsLabel.length)}
+          </>
+        ) : (
+          disclosure
+        )}
+      </label>
+    </div>
+
+    <input type="hidden" name="disclosureVersion" value={sms.optIn.disclosureVersion} />
+    <input type="hidden" name="disclosureText" value={sms.optIn.disclosureText} />
+
+    <div class="sms-optin__actions">
+      <button class="sms-optin__submit" type="submit">
+        {sms.optIn.fields.submitLabel}
+      </button>
+      <p class="sms-optin__status" role="status" aria-live="polite"></p>
+    </div>
+
+    <p class="sms-optin__fallback">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+  </form>
+</section>
+
+<script
+  define:vars={{
+    successHeading: sms.optIn.status.successHeading,
+    successBody: sms.optIn.status.successBody,
+    missingEndpoint: sms.optIn.status.missingEndpoint,
+    genericError: sms.optIn.status.genericError,
+  }}
+>
+  const form = document.querySelector('.sms-optin__form');
+  const status = document.querySelector('.sms-optin__status');
+  const fallback = document.querySelector('.sms-optin__fallback');
+
+  const copy = {
+    successHeading,
+    successBody,
+    missingEndpoint,
+    genericError,
+  };
+
+  const setStatus = (message, tone = 'muted') => {
+    if (!status) return;
+    status.textContent = message;
+    status.dataset.tone = tone;
+  };
+
+  const normalizePhone = (raw) => {
+    const trimmed = raw.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('+')) return '+' + trimmed.slice(1).replace(/\D/g, '');
+    const digits = trimmed.replace(/\D/g, '');
+    if (digits.length === 10) return '+1' + digits;
+    if (digits.length === 11 && digits.startsWith('1')) return '+' + digits;
+    return '+' + digits;
+  };
+
+  const endpoint = form?.dataset.endpoint ?? '';
+  if (!endpoint) {
+    setStatus(copy.missingEndpoint, 'muted');
+    form?.querySelectorAll('input, button').forEach((el) => {
+      if (el instanceof HTMLInputElement || el instanceof HTMLButtonElement) el.disabled = true;
+    });
+    if (fallback) fallback.style.display = 'block';
+  } else if (fallback) {
+    fallback.style.display = 'none';
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form) return;
+
+    setStatus('', 'muted');
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const name = String(data.get('name') ?? '').trim();
+    const phone = normalizePhone(String(data.get('phone') ?? ''));
+    const consent = data.get('consent') === 'on';
+    const disclosureVersion = String(data.get('disclosureVersion') ?? '');
+    const disclosureText = String(data.get('disclosureText') ?? '');
+
+    const body = new URLSearchParams();
+    body.set('name', name);
+    body.set('phone', phone);
+    body.set('consent', consent ? 'true' : 'false');
+    body.set('disclosureVersion', disclosureVersion);
+    body.set('disclosureText', disclosureText);
+
+    const submit = form.querySelector('button[type="submit"]');
+    if (submit) submit.disabled = true;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body,
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(text || `HTTP ${res.status}`);
+      }
+
+      setStatus(`${copy.successHeading} ${copy.successBody}`, 'ok');
+      form.reset();
+    } catch (err) {
+      setStatus(copy.genericError, 'bad');
+    } finally {
+      if (submit) submit.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .sms-optin {
+    max-width: 900px;
+  }
+
+  .sms-optin__heading {
+    margin: 8px 0 10px;
+    font-family: var(--font-main);
+    font-weight: 800;
+    font-size: clamp(26px, 3.6vw, 42px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+
+  .sms-optin__note {
+    margin: 0 0 22px;
+    max-width: 68ch;
+    font-size: var(--fs-body);
+    line-height: 1.75;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .sms-optin__form {
+    padding: 22px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--hairline);
+    background: var(--card-frame);
+    box-shadow: var(--card-shadow);
+  }
+
+  .sms-optin__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  @media (max-width: 620px) {
+    .sms-optin__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .sms-optin__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sms-optin__label {
+    font-family: var(--font-accent);
+    font-style: var(--accent-style);
+    font-size: var(--fs-note);
+    color: var(--ink);
+  }
+
+  .sms-optin input[type='text'],
+  .sms-optin input[type='tel'],
+  .sms-optin input:not([type]),
+  .sms-optin__field input {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid var(--hairline);
+    background: rgba(255, 255, 255, 0.34);
+    padding: 12px 14px;
+    font: inherit;
+    font-size: var(--fs-body);
+    color: var(--ink);
+  }
+
+  html[data-theme='dark'] .sms-optin__field input {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .sms-optin__consent {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+    align-items: start;
+  }
+
+  .sms-optin__consent input {
+    margin-top: 5px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .sms-optin__consent-text {
+    font-size: var(--fs-body);
+    line-height: 1.65;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .sms-optin__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+
+  .sms-optin__submit {
+    cursor: pointer;
+    border: 0;
+    border-radius: var(--radius-pill);
+    padding: 14px 26px;
+    background: var(--wisteria);
+    color: var(--cta-ink);
+    font-family: var(--font-main);
+    font-weight: 700;
+    font-size: var(--fs-cta);
+    letter-spacing: 0.04em;
+    transition: background 220ms ease;
+  }
+
+  .sms-optin__submit:hover {
+    background: var(--float-2);
+  }
+
+  .sms-optin__submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .sms-optin__status {
+    margin: 0;
+    font-family: var(--font-accent);
+    font-style: var(--accent-style);
+    font-size: var(--fs-note);
+    color: var(--ink-faint);
+  }
+
+  .sms-optin__status[data-tone='ok'] {
+    color: var(--ink);
+  }
+
+  .sms-optin__status[data-tone='bad'] {
+    color: var(--float-2);
+  }
+
+  .sms-optin__fallback {
+    margin: 14px 0 0;
+    display: none;
+    font-size: var(--fs-kicker);
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  .sms-optin__fallback a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--hairline);
+    text-underline-offset: 4px;
+  }
+
+  .sms-optin__fallback a:hover {
+    color: var(--float-2);
+    text-decoration-color: currentColor;
+  }
+</style>
+

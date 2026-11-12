@@ -161,3 +161,99 @@ export const contact = {
     resume: { label: 'résumé', href: '/corporate-resume.pdf' },
   },
 } as const;
+
+export const sms = {
+  programName: 'Michaela Kotarba Yoga Updates',
+  maxMessagesPerMonth: 4,
+  keywords: {
+    help: 'HELP',
+    stop: 'STOP',
+  },
+  ui: {
+    legalNavAriaLabel: 'Legal',
+    lastUpdatedLabel: 'Last updated',
+  },
+  confirmationMessage:
+    'Michaela Kotarba Yoga Updates: Thanks for subscribing! Up to 4 msgs/month. Msg & data rates may apply. Reply HELP for help, STOP to cancel.',
+  support: {
+    email: site.email,
+  },
+  optIn: {
+    heading: 'Get yoga updates by text',
+    note: 'Class announcements, pop-ups, and private session openings — sent sparingly.',
+    fields: {
+      nameLabel: 'Name',
+      phoneLabel: 'Mobile phone',
+      submitLabel: 'Subscribe',
+    },
+    status: {
+      successHeading: 'You’re subscribed.',
+      successBody: 'Check your phone for a confirmation text.',
+      missingEndpoint:
+        'Text sign-ups are temporarily unavailable. Please email Michaela to subscribe.',
+      genericError:
+        'Something went wrong sending your request. Please try again, or email Michaela.',
+    },
+    disclosureVersion: '2026-11-12',
+    disclosureText:
+      'By checking this box, you agree to receive recurring text messages from Michaela Kotarba about yoga classes, pop-ups, and private sessions at the number provided. Up to 4 msgs/month. Message and data rates may apply. Reply HELP for help, STOP to cancel. Consent is not a condition of purchase. See our Privacy Policy and SMS Terms.',
+  },
+  privacy: {
+    navLabel: 'Privacy Policy',
+    title: 'Privacy Policy',
+    lastUpdated: 'November 12, 2026',
+    sections: [
+      {
+        heading: 'Overview',
+        paragraphs: [
+          'This Privacy Policy describes how Michaela Kotarba collects and uses personal information for the Michaela Kotarba Yoga Updates text messaging program.',
+        ],
+      },
+      {
+        heading: 'Information we collect',
+        paragraphs: [
+          'When you opt in to receive text messages, we may collect your name, your mobile phone number, and a record of your consent (including the date/time, the disclosure text shown at opt-in, and related request metadata such as IP address and user agent).',
+        ],
+      },
+      {
+        heading: 'How we use information',
+        paragraphs: [
+          'We use this information only to send you updates about yoga classes, pop-ups, and private sessions and to maintain compliance records for the program.',
+          'Message frequency is up to 4 messages per month. Message and data rates may apply.',
+        ],
+      },
+      {
+        heading: 'Sharing of information',
+        paragraphs: [
+          'No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties.',
+        ],
+      },
+      {
+        heading: 'Your choices (opt out)',
+        paragraphs: [
+          'You can opt out at any time by replying STOP to any message. You can also request help by replying HELP.',
+        ],
+      },
+      {
+        heading: 'Contact',
+        paragraphs: [
+          `If you have questions about this Privacy Policy or the text messaging program, contact ${site.email}.`,
+        ],
+      },
+    ],
+  },
+  terms: {
+    navLabel: 'SMS Terms',
+    title: 'SMS Terms',
+    lastUpdated: 'November 12, 2026',
+    paragraphs: [
+      'By opting in to receive text messages from Michaela Kotarba, you agree to these SMS Terms.',
+      'Program: Michaela Kotarba Yoga Updates. Messages may include updates about yoga classes, pop-ups, and private sessions.',
+      'Message frequency is up to 4 messages per month. Message and data rates may apply.',
+      'To get help, reply HELP. To cancel, reply STOP.',
+      `For support, email ${site.email}.`,
+      'Carriers are not liable for delayed or undelivered messages.',
+      'See our Privacy Policy for more information.',
+    ],
+  },
+} as const;
